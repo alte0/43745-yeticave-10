@@ -1,7 +1,7 @@
 # Личный проект «YetiCave»
 
 * Студент: [Максим Дмитриев](https://up.htmlacademy.ru/php/10/user/43745).
-* Наставник: `Неизвестно`.
+* Наставник: [Алексей Стулов](https://htmlacademy.ru/profile/id25231).
 
 ---
 
