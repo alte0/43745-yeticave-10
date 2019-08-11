@@ -142,5 +142,16 @@ function include_template($name, array $data = []) {
 
     return $result;
 }
-
-
+/**
+ * Функция форматирования суммы и добавления к ней знака рубля
+ * @param number $num Форматируемая сумма
+ * @return string отформатированная сумма вместе со знаком рубля
+ */
+function formatPrice ($num) {
+    $num = (int)$num;
+    $num = ceil($num);
+    if ($num >= 1000) {
+        $num = number_format($num, 0, '.', ' ');
+    }
+    return $num . " ₽";
+}
