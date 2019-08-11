@@ -153,5 +153,5 @@ function formatPrice (float $num):string {
     if ($num >= 1000) {
         $num = number_format($num, 0, '.', ' ');
     }
-    return $num . " ₽";
+    return $num . '<b class="rub">р</b>';
 }
