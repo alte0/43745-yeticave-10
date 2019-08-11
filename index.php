@@ -5,7 +5,32 @@ $is_auth = rand(0, 1);
 
 $user_name = 'Максим'; // укажите здесь ваше имя
 
-$categories = ["Доски и лыжи", "Крепления", "Ботинки", "Одежда", "Инструменты", "Разное"];
+$categories = [
+    [
+        "title" => "Доски и лыжи",
+        "className" => "boards"
+    ], 
+    [
+        "title" => "Крепления",
+        "className" => "attachment"
+    ], 
+    [
+        "title" => "Ботинки",
+        "className" => "boots"
+    ], 
+    [
+        "title" => "Одежда",
+        "className" => "clothing"
+    ], 
+    [
+        "title" => "Инструменты",
+        "className" => "tools"
+    ], 
+    [
+        "title" => "Разное",
+        "className" => "other"
+    ]
+];
 
 $announcements = [
     [
@@ -98,9 +123,9 @@ $announcements = [
         <p class="promo__text">На нашем интернет-аукционе ты найдёшь самое эксклюзивное сноубордическое и горнолыжное снаряжение.</p>
         <ul class="promo__list">
             <!--заполните этот список из массива категорий-->
-            <?php foreach($categories as $value): ?>
-            <li class="promo__item promo__item--boards">
-                <a class="promo__link" href="pages/all-lots.html"><?= $value ?></a>
+            <?php foreach($categories as $item): ?>
+            <li class="promo__item promo__item--<?= $item["className"] ?>">
+                <a class="promo__link" href="pages/all-lots.html"><?= $item["title"] ?></a>
             </li>
             <?php endforeach;?>
         </ul>
@@ -140,9 +165,9 @@ $announcements = [
     <nav class="nav">
         <ul class="nav__list container">
             <!--заполните этот список из массива категорий-->
-            <?php foreach($categories as $value): ?>
+            <?php foreach($categories as $item): ?>
             <li class="nav__item">
-                <a href="pages/all-lots.html"><?= $value ?></a>
+                <a href="pages/all-lots.html"><?= $item["title"] ?></a>
             </li>
             <?php endforeach;?>
         </ul>

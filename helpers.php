@@ -142,13 +142,13 @@ function include_template($name, array $data = []) {
 
     return $result;
 }
+
 /**
- * Функция форматирования суммы и добавления к ней знака рубля, если цена меньше 1000 - то не форматирует. Только добавляет знак рубля
+ * Функция форматирования суммы и добавления к ней знака рубля
  * @param number $num Форматируемая сумма
  * @return string отформатированная сумма вместе со знаком рубля
  */
-function formatPrice ($num) {
-    $num = (int)$num;
+function formatPrice (float $num):string {
     $num = ceil($num);
     if ($num >= 1000) {
         $num = number_format($num, 0, '.', ' ');
