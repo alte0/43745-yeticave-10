@@ -167,3 +167,45 @@ function clearStrDataTags($str) {
 
     return $text;
 }
+
+/**
+ * Функция добаления 0-ей до 2-х знаков
+ * @param string $str 
+ * @return string 
+ */
+function addStrPadZero($str) {
+    return str_pad($str, 2, "0", STR_PAD_LEFT);
+}
+/**
+ * Функция вычисления оставшегося времени в формате «ЧЧ:ММ»
+ * @param date $date дата в формате ГГГГ-ММ-ДД;
+ * @return array [09, 29] - «ЧЧ:ММ»
+ */
+function calcDateExpiration($date): array {
+    date_default_timezone_set("Asia/Yekaterinburg");
+    // date_default_timezone_set("Asia/Tokyo");
+    date_default_timezone_set("Asia/Kamchatka");
+    // date_default_timezone_set("America/Anchorage");
+    if (strtotime('now') > strtotime($date)) {
+        return [
+            "hours" => "00",
+            "minutes" => "00",
+            "seconds" => "00"
+        ];
+    } else {
+        $dateEnd = date_create($date);
+        $dateNow = date_create('now');
+        $dateDiff = date_diff($dateEnd, $dateNow);
+        $timeLeftStr = date_interval_format($dateDiff, "%d %H %I %s");
+        $timeLeft = explode(" ", $timeLeftStr);
+        $hours = addStrPadZero($timeLeft[0] * 24 + $timeLeft[1]);
+        $minutes = addStrPadZero($timeLeft[2]);
+        $seconds = addStrPadZero($timeLeft[3]);
+
+        return [
+            "hours" => $hours,
+            "minutes" => $minutes,
+            "seconds" => $seconds
+        ];
+    }
+}

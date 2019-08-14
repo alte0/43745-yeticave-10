@@ -29,8 +29,9 @@
             <span class="lot__amount">Стартовая цена</span>
             <span class="lot__cost"><?= formatPrice($announcement["price"]) ?></span>
           </div>
-          <div class="lot__timer timer">
-            12:23
+          <?php $time = calcDateExpiration($announcement["date-expiration"]); ?>
+          <div class="lot__timer timer <?= $time["hours"] < 1 ? "timer--finishing": "" ?>">
+            <?= "{$time["hours"]}:{$time["minutes"]}:{$time["seconds"]}" ?>
           </div>
         </div>
       </div>

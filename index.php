@@ -11,6 +11,7 @@ $main = include_template('main.php',
 
 $layout = include_template('layout.php',
     [
+        "title" => "Главная - YetiCave",
         "categories" => $categories,
         "content" => $main,
         "user_name" => $user_name,
