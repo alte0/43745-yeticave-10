@@ -182,10 +182,6 @@ function addStrPadZero($str) {
  * @return array [09, 29] - «ЧЧ:ММ»
  */
 function calcDateExpiration($date): array {
-    date_default_timezone_set("Asia/Yekaterinburg");
-    // date_default_timezone_set("Asia/Tokyo");
-    date_default_timezone_set("Asia/Kamchatka");
-    // date_default_timezone_set("America/Anchorage");
     if (strtotime('now') > strtotime($date)) {
         return [
             "hours" => "00",
