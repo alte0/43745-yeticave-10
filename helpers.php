@@ -153,5 +153,17 @@ function formatPrice (float $num):string {
     if ($num >= 1000) {
         $num = number_format($num, 0, '.', ' ');
     }
+
     return $num . '<b class="rub">р</b>';
+}
+
+/**
+ * Функция очистки данных от тэгов
+ * @param string $num Очишаемая строка
+ * @return string Очишенная строка
+ */
+function clearStrDataTags($str) {
+    $text = strip_tags($str);
+
+    return $text;
 }
