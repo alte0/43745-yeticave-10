@@ -36,35 +36,41 @@ $announcements = [
         "category" => "Доски и лыжи",
         "price" => "10999",
         "url-img" => "img/lot-1.jpg",
+        "date-expiration" => "2019-08-15"
     ],
     [
         "title" => "DC Ply Mens 2016/2017 Snowboard",
         "category" => "Доски и лыжи",
         "price" => "159999",
         "url-img" => "img/lot-2.jpg",
+        "date-expiration" => "2019-08-16"
     ],
     [
         "title" => "Крепления Union Contact Pro 2015 года размер L/XL",
         "category" => "Крепления",
         "price" => "8000",
         "url-img" => "img/lot-3.jpg",
+        "date-expiration" => "2019-08-17"
     ],
     [
         "title" => "Ботинки для сноуборда DC Mutiny Charocal",
         "category" => "Ботинки",
         "price" => "10999",
         "url-img" => "img/lot-4.jpg",
+        "date-expiration" => "2019-08-15"
     ],
     [
         "title" => "Куртка для сноуборда DC Mutiny Charocal",
         "category" => "Одежда",
         "price" => "7500",
         "url-img" => "img/lot-5.jpg",
+        "date-expiration" => "2019-08-16"
     ],
     [
         "title" => "Маска Oakley Canopy",
         "category" => "Разное",
         "price" => "5400",
         "url-img" => "img/lot-6.jpg",
+        "date-expiration" => "2019-08-17"
     ]
 ];
