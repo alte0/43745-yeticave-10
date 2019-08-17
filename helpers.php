@@ -188,20 +188,20 @@ function calcDateExpiration($date): array {
             "minutes" => "00",
             "seconds" => "00"
         ];
-    } else {
-        $dateEnd = date_create($date);
-        $dateNow = date_create('now');
-        $dateDiff = date_diff($dateEnd, $dateNow);
-        $timeLeftStr = date_interval_format($dateDiff, "%d %H %I %s");
-        $timeLeft = explode(" ", $timeLeftStr);
-        $hours = addStrPadZero($timeLeft[0] * 24 + $timeLeft[1]);
-        $minutes = addStrPadZero($timeLeft[2]);
-        $seconds = addStrPadZero($timeLeft[3]);
-
-        return [
-            "hours" => $hours,
-            "minutes" => $minutes,
-            "seconds" => $seconds
-        ];
     }
+    
+    $dateEnd = date_create($date);
+    $dateNow = date_create('now');
+    $dateDiff = date_diff($dateEnd, $dateNow);
+    $timeLeftStr = date_interval_format($dateDiff, "%d %H %I %s");
+    $timeLeft = explode(" ", $timeLeftStr);
+    $hours = addStrPadZero($timeLeft[0] * 24 + $timeLeft[1]);
+    $minutes = addStrPadZero($timeLeft[2]);
+    $seconds = addStrPadZero($timeLeft[3]);
+
+    return [
+        "hours" => $hours,
+        "minutes" => $minutes,
+        "seconds" => $seconds
+    ];
 }
