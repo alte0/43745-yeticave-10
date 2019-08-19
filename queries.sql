@@ -32,10 +32,12 @@ INSERT INTO bets (price, user_id, lot_id)
 -- Получить все категории.
 SELECT * FROM сategories;
 -- Получить самые новые, открытые лоты. Каждый лот должен включать название, стартовую цену, ссылку на изображение, цену, название категории.
-SELECT l.id, l.date_create, l.date_completion, l.name, l.start_price, l.image, l.category_id, c.name, b.price FROM lots l
+SELECT l.id, l.date_create, l.date_completion, l.name, l.start_price, l.image, l.category_id, c.name AS category_name, IFNULL(max(b.price), l.start_price) AS price FROM lots l
 INNER JOIN сategories c ON l.category_id = c.id
 LEFT JOIN bets b ON l.id = b.lot_id
-WHERE l.date_completion >= "2019-08-26 13:15";
+WHERE l.date_completion >= "2019-08-26 13:15"
+GROUP BY id
+;
 -- Показать лот по его id. Получите также название категории, к которой принадлежит лот.
 SELECT l.*, c.name FROM lots l
 INNER JOIN сategories c ON l.category_id = c.id
