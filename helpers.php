@@ -207,7 +207,7 @@ function calcDateExpiration($date): array {
 }
 /**
  * Функция показывает шаблон ошибок 
- * @param error $error - текст ошибки;
+ * @param data $data - ассоциативный массив для передачи данных;
  */
 function showErrorTemplate(array $data = []) {
     extract($data);
