@@ -13,8 +13,7 @@ $linkDB = mysqli_connect($dbConf["urlDB"], $dbConf["userDB"], $dbConf["passwordD
 
 if (!$linkDB) {
     $error = "Ошибка: Невозможно подключиться к MySQL " . mysqli_connect_error();
-    showErrorTemplate([
-        "categories" => $categories, 
+    showErrorTemplate([ 
         "error" => $error,
         "user_name" => $user_name,
         "is_auth" => $is_auth
@@ -33,7 +32,6 @@ $resultAnnouncements = mysqli_query($linkDB, $sqlAnnouncements);
 if (!$resultCategories && !$resultAnnouncements) {
     $error = mysqli_error($linkDB);
     showErrorTemplate([
-        "categories" => $categories,
         "error" => $error,
         "user_name" => $user_name,
         "is_auth" => $is_auth

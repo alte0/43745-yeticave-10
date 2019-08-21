@@ -216,7 +216,6 @@ function showErrorTemplate(array $data = []) {
         'layout.php',
         [
             "title" => "Ошибка - YetiCave",
-            "categories" => $categories, 
             "content" => $content,
             "user_name" => $user_name,
             "is_auth" => $is_auth
