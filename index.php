@@ -64,4 +64,3 @@ $layout = include_template(
 );
 
 print($layout);
-var_dump(date_format($today, 'Y-m-d H:i:s'));
