@@ -205,3 +205,22 @@ function calcDateExpiration($date): array {
         "seconds" => $seconds
     ];
 }
+/**
+ * Функция показывает шаблон ошибок 
+ * @param error $error - текст ошибки;
+ */
+function showErrorTemplate(array $data = []) {
+    extract($data);
+    $content = include_template('error.php', ['error' => $error]);
+    $layout = include_template(
+        'layout.php',
+        [
+            "title" => "Ошибка - YetiCave",
+            "categories" => $categories, 
+            "content" => $content,
+            "user_name" => $user_name,
+            "is_auth" => $is_auth
+        ]
+    );
+    print($layout);
+ }
