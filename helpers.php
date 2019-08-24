@@ -34,6 +34,7 @@ function db_get_prepare_stmt($link, $sql, $data = []) {
 
     if ($stmt === false) {
         $errorMsg = 'Не удалось инициализировать подготовленное выражение: ' . mysqli_error($link);
+        var_dump($data);
         die($errorMsg);
     }
 
@@ -146,15 +147,16 @@ function include_template($name, array $data = []) {
 /**
  * Функция форматирования суммы и добавления к ней знака рубля
  * @param number $num Форматируемая сумма
+ * @param boolean $isAddRubleSign Добовлять ли знак рубля
  * @return string отформатированная сумма вместе со знаком рубля
  */
-function formatPrice (float $num):string {
+function formatPrice (float $num, $isAddRubleSign = true):string {
     $num = ceil($num);
     if ($num >= 1000) {
         $num = number_format($num, 0, '.', ' ');
     }
-
-    return $num . '<b class="rub">р</b>';
+    
+    return $isAddRubleSign ? $num . '<b class="rub">р</b>' : $num;
 }
 
 /**
@@ -206,20 +208,10 @@ function calcDateExpiration($date): array {
     ];
 }
 /**
- * Функция показывает шаблон ошибок 
+ * Функция возврашает шаблон с ошибокой
  * @param data $data - ассоциативный массив для передачи данных;
+ * @return string Итоговый HTML
  */
-function showErrorTemplate(array $data = []) {
-    extract($data);
-    $content = include_template('error.php', ['error' => $error]);
-    $layout = include_template(
-        'layout.php',
-        [
-            "title" => "Ошибка - YetiCave",
-            "content" => $content,
-            "user_name" => $user_name,
-            "is_auth" => $is_auth
-        ]
-    );
-    print($layout);
+function includeErrorTemplate($error) {
+    return include_template('error.php', ['error' => $error]);
  }
