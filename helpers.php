@@ -211,7 +211,7 @@ function calcDateExpiration($date): array {
  * Функция показывает шаблон с ошибокой
  * @param data $data - ассоциативный массив для передачи данных;
  */
-function showErrorTemplate(array $data) {
+function showErrorTemplateAndDie(array $data) {
     extract($data);
     $content = include_template('error.php', ['error' => $error]);
     $layout = include_template(
@@ -225,6 +225,7 @@ function showErrorTemplate(array $data) {
         ]
     );
     print($layout);
+    die;
  }
 /**
  * Функция получения url для показа лота по id.

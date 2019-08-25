@@ -8,20 +8,17 @@ $sqlAnnouncements = "SELECT lots.*, c.name AS category FROM lots INNER JOIN сat
 
 $resultAnnouncements = mysqli_query($linkDB, $sqlAnnouncements);
 
-if (!$resultCategories && !$resultAnnouncements) {
+if (!$resultAnnouncements) {
     $error = mysqli_error($linkDB);
-    showErrorTemplate([
-        "title" => "Ошибка - YetiCave",
+    showErrorTemplateAndDie([
         "error" => $error,
         "categories" => $categories,
         "content" => $content,
         "user_name" => $user_name,
         "is_auth" => $is_auth
     ]);
-    die;
 }
 
-$categories = mysqli_fetch_all($resultCategories, MYSQLI_ASSOC);
 $announcements = mysqli_fetch_all($resultAnnouncements, MYSQLI_ASSOC);
 
 $content = include_template(
