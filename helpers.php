@@ -34,6 +34,7 @@ function db_get_prepare_stmt($link, $sql, $data = []) {
 
     if ($stmt === false) {
         $errorMsg = 'Не удалось инициализировать подготовленное выражение: ' . mysqli_error($link);
+        var_dump($data);
         die($errorMsg);
     }
 
@@ -146,15 +147,16 @@ function include_template($name, array $data = []) {
 /**
  * Функция форматирования суммы и добавления к ней знака рубля
  * @param number $num Форматируемая сумма
+ * @param boolean $isAddRubleSign Добовлять ли знак рубля
  * @return string отформатированная сумма вместе со знаком рубля
  */
-function formatPrice (float $num):string {
+function formatPrice (float $num, $isAddRubleSign = true):string {
     $num = ceil($num);
     if ($num >= 1000) {
         $num = number_format($num, 0, '.', ' ');
     }
-
-    return $num . '<b class="rub">р</b>';
+    
+    return $isAddRubleSign ? $num . '<b class="rub">р</b>' : $num;
 }
 
 /**
@@ -162,7 +164,7 @@ function formatPrice (float $num):string {
  * @param string $num Очишаемая строка
  * @return string Очишенная строка
  */
-function clearStrDataTags($str) {
+function clearStrDataTags($str):string {
     $text = strip_tags($str);
 
     return $text;
@@ -173,7 +175,7 @@ function clearStrDataTags($str) {
  * @param string $str 
  * @return string 
  */
-function addStrPadZero($str) {
+function addStrPadZero($str):string {
     return str_pad($str, 2, "0", STR_PAD_LEFT);
 }
 /**
@@ -205,3 +207,33 @@ function calcDateExpiration($date): array {
         "seconds" => $seconds
     ];
 }
+/**
+ * Функция показывает шаблон с ошибокой
+ * @param data $data - ассоциативный массив для передачи данных;
+ */
+function showErrorTemplate(array $data) {
+    extract($data);
+    $content = include_template('error.php', ['error' => $error]);
+    $layout = include_template(
+        'layout.php',
+        [
+            "title" => "Ошибка - YetiCave",
+            "categories" => $categories,
+            "content" => $content,
+            "user_name" => $user_name,
+            "is_auth" => $is_auth
+        ]
+    );
+    print($layout);
+ }
+/**
+ * Функция получения url для показа лота по id.
+ * @param number $id - ассоциативный массив для передачи данных;
+ * @return string Итоговый url
+ */
+function getUrlLotId($id):string {
+    $params = $_GET;
+    $params['id'] = $id;
+    $query = http_build_query($params);
+    return "/lot.php?" . $query;
+ }
