@@ -164,7 +164,7 @@ function formatPrice (float $num, $isAddRubleSign = true):string {
  * @param string $num Очишаемая строка
  * @return string Очишенная строка
  */
-function clearStrDataTags($str) {
+function clearStrDataTags($str):string {
     $text = strip_tags($str);
 
     return $text;
@@ -175,7 +175,7 @@ function clearStrDataTags($str) {
  * @param string $str 
  * @return string 
  */
-function addStrPadZero($str) {
+function addStrPadZero($str):string {
     return str_pad($str, 2, "0", STR_PAD_LEFT);
 }
 /**
@@ -212,6 +212,17 @@ function calcDateExpiration($date): array {
  * @param data $data - ассоциативный массив для передачи данных;
  * @return string Итоговый HTML
  */
-function includeErrorTemplate($error) {
+function includeErrorTemplate($error):string {
     return include_template('error.php', ['error' => $error]);
+ }
+/**
+ * Функция получения url для показа лота по id.
+ * @param number $id - ассоциативный массив для передачи данных;
+ * @return string Итоговый url
+ */
+function getUrlLotId($id):string {
+    $params = $_GET;
+    $params['id'] = $id;
+    $query = http_build_query($params);
+    return "/lot.php?" . $query;
  }
