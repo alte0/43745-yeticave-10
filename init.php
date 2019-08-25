@@ -9,17 +9,15 @@ $linkDB = mysqli_connect($dbConf["urlDB"], $dbConf["userDB"], $dbConf["passwordD
 
 if (!$linkDB) {
   $error = "Ошибка: Невозможно подключиться к MySQL " . mysqli_connect_error();
-  $content = include_template('error.php', ['error' => $error]);
-  $layout = include_template(
-    'layout.php',
-    [
-      "title" => "Ошибка - YetiCave",
-      "content" => $content,
-      "user_name" => $user_name,
-      "is_auth" => $is_auth
-    ]
-  );
-  print($layout);
+  
+  showErrorTemplate([
+    "title" => "Ошибка - YetiCave",
+    "error" => $error,
+    "categories" => $categories,
+    "content" => $content,
+    "user_name" => $user_name,
+    "is_auth" => $is_auth
+  ]);
   die;
 }
 

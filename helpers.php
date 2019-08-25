@@ -208,12 +208,23 @@ function calcDateExpiration($date): array {
     ];
 }
 /**
- * Функция возврашает шаблон с ошибокой
+ * Функция показывает шаблон с ошибокой
  * @param data $data - ассоциативный массив для передачи данных;
- * @return string Итоговый HTML
  */
-function includeErrorTemplate($error):string {
-    return include_template('error.php', ['error' => $error]);
+function showErrorTemplate(array $data) {
+    extract($data);
+    $content = include_template('error.php', ['error' => $error]);
+    $layout = include_template(
+        'layout.php',
+        [
+            "title" => "Ошибка - YetiCave",
+            "categories" => $categories,
+            "content" => $content,
+            "user_name" => $user_name,
+            "is_auth" => $is_auth
+        ]
+    );
+    print($layout);
  }
 /**
  * Функция получения url для показа лота по id.
