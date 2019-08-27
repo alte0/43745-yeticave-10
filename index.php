@@ -2,7 +2,6 @@
 require "init.php";
 
 $content = '';
-$today = date("Y-m-d H:i:s");
 
 $sqlAnnouncements = "SELECT lots.*, c.name AS category FROM lots INNER JOIN сategories c ON lots.category_id = c.id LEFT JOIN bets b ON lots.id = b.lot_id WHERE lots.date_completion >= '$today' GROUP BY id ORDER BY date_create DESC";
 

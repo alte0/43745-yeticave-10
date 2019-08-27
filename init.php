@@ -3,6 +3,7 @@ require "helpers.php";
 require "data-test.php";
 require "config/php-ini.php";
 $dbConf = require_once 'config/db.php';
+$today = date("Y-m-d H:i:s");
 $categories = [];
 
 $linkDB = mysqli_connect($dbConf["urlDB"], $dbConf["userDB"], $dbConf["passwordDB"], $dbConf["nameDB"]);
