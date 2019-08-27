@@ -146,7 +146,7 @@ function include_template($name, array $data = []) {
 
 /**
  * Функция форматирования суммы и добавления к ней знака рубля
- * @param number $num Форматируемая сумма
+ * @param float $num Форматируемая сумма
  * @param boolean $isAddRubleSign Добовлять ли знак рубля
  * @return string отформатированная сумма вместе со знаком рубля
  */
@@ -209,9 +209,9 @@ function calcDateExpiration($date): array {
 }
 /**
  * Функция показывает шаблон с ошибокой
- * @param data $data - ассоциативный массив для передачи данных;
+ * @param array $data - ассоциативный массив для передачи данных;
  */
-function showErrorTemplate(array $data) {
+function showErrorTemplateAndDie(array $data) {
     extract($data);
     $content = include_template('error.php', ['error' => $error]);
     $layout = include_template(
@@ -225,10 +225,11 @@ function showErrorTemplate(array $data) {
         ]
     );
     print($layout);
+    die;
  }
 /**
  * Функция получения url для показа лота по id.
- * @param number $id - ассоциативный массив для передачи данных;
+ * @param integer $id - ассоциативный массив для передачи данных;
  * @return string Итоговый url
  */
 function getUrlLotId($id):string {
@@ -237,3 +238,103 @@ function getUrlLotId($id):string {
     $query = http_build_query($params);
     return "/lot.php?" . $query;
  }
+/**
+ * Получения значения из $_POST для заполнеиня данных в форме.
+ * @param string $name - имя ключа из массива $_POST для получения значения;
+ * @return void
+ */
+function getPostVal($name) {
+    return $_POST[$name] ?? "";
+}
+/**
+ * Валидация поля на заполненость
+ * @param string $name - имя ключа из массива $_POST для получения значения;
+ * @return void
+ */
+function validateFilled($name) {
+    if (empty($_POST[$name])) {
+        return "Это поле должно быть заполнено";
+    }
+
+    return null;
+}
+/**
+ * Валидация строки
+ * @param string $name - имя ключа из массива $_POST для валидации;
+ * @param integer $min - минимальное значение длины строки;
+ * @param integer $max - максимальное значение длины строки;
+ */
+function validateLength(string $name, int $min, int $max) {
+    $len = strlen($_POST[$name]);
+
+    if ($len < $min or $len > $max) {
+        return "Значение должно быть от $min до $max символов";
+    }
+
+    return null;
+}
+/**
+ * Валидация id категории из масива
+ * @param string $name - имя ключа из массива $_POST для валидации;
+ * @param array $allowed_list - массив котором проверяем значение;
+ */
+function validateCategory(string $name, array $allowed_list) {
+    $id = $_POST[$name];
+
+    if (!in_array($id, $allowed_list)) {
+        return "Указана несуществующая категория";
+    }
+
+    return null;
+}
+/**
+ * Валидация целого числа и и больше нуля
+ * @param string $name - имя ключа из массива $_POST для валидации;
+ */
+function validateValueOnInteger($name) {
+    $num = $_POST[$name];
+
+    if (!(is_numeric($num) && $num > 0)) {
+        return "Значение должно быть целым числом и больше нуля";
+    }
+
+    return null;
+}
+/**
+ * Валидация даты на формат и дата больше текущей даты, хотя бы на один день
+ * @param string $name - имя ключа из массива $_POST для валидации;
+ */
+function validateFormatDateAndPlusMinOne($name) {
+    $date = $_POST[$name];
+    $today = date("Y-m-d");
+
+    if (!(is_date_valid($date) && strtotime($date) >= strtotime($today) + 86400)) {
+        return "Введите дату завершения торгов в формате ГГГГ-ММ-ДД + один день";
+    }
+
+    return null;
+}
+/**
+ * Валидация файла на тип image
+ * @param string $name - имя ключа из массива $_POST для валидации;
+ */
+function validateFileImageType($name) {
+    $filePath = $_FILES[$name]["tmp_name"];
+    $fileType = mime_content_type($filePath);
+
+    if (!($fileType === "image/png" || $fileType === "image/jpeg")) {
+        return "Изображение должно быть png или jpeg";
+    }
+
+    return null;
+}
+/**
+ * Добавляет к тексту запятую и пробел.
+ * @param string $str - текст;
+ * @return string 
+ */
+function addCommaAndSpaceText($str) {
+    $comma = ", ";
+
+    return $comma . $str;
+}

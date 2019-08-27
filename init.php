@@ -3,25 +3,35 @@ require "helpers.php";
 require "data-test.php";
 require "config/php-ini.php";
 $dbConf = require_once 'config/db.php';
+$today = date("Y-m-d H:i:s");
 $categories = [];
 
 $linkDB = mysqli_connect($dbConf["urlDB"], $dbConf["userDB"], $dbConf["passwordDB"], $dbConf["nameDB"]);
 
 if (!$linkDB) {
   $error = "Ошибка: Невозможно подключиться к MySQL " . mysqli_connect_error();
-  
-  showErrorTemplate([
-    "title" => "Ошибка - YetiCave",
+
+  showErrorTemplateAndDie([
     "error" => $error,
     "categories" => $categories,
-    "content" => $content,
     "user_name" => $user_name,
     "is_auth" => $is_auth
   ]);
-  die;
 }
 
 mysqli_set_charset($linkDB, "utf8");
 
 $sqlCategories = 'SELECT * FROM сategories';
 $resultCategories = mysqli_query($linkDB, $sqlCategories);
+
+if (!$resultCategories) {
+  $error = mysqli_error($linkDB);
+  showErrorTemplateAndDie([
+    "error" => $error,
+    "categories" => $categories,
+    "user_name" => $user_name,
+    "is_auth" => $is_auth
+  ]);
+}
+
+$categories = mysqli_fetch_all($resultCategories, MYSQLI_ASSOC);
