@@ -1,17 +1,17 @@
 <?php
 require "init.php";
 
-// if (!$is_auth) {
-//   $seconds = 6;
-//   header("Refresh: $seconds; url=/");
-//   $error = "Вы не вошли на сайт, через $seconds секунд вас перенаправит на главную страницу сайта.";
-//   showErrorTemplateAndDie([
-//     "categories" => $categories,
-//     "error" => $error,
-//     "user_name" => $user_name,
-//     "is_auth" => $is_auth
-//   ]);
-// }
+if (!$is_auth) {
+  $seconds = 6;
+  header("Refresh: $seconds; url=/");
+  $error = "Вы не вошли на сайт, через $seconds секунд вас перенаправит на главную страницу сайта.";
+  showErrorTemplateAndDie([
+    "categories" => $categories,
+    "error" => $error,
+    "user_name" => $user_name,
+    "is_auth" => $is_auth
+  ]);
+}
 
 $errors = [];
 
