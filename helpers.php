@@ -301,7 +301,7 @@ function validateFormatDateAndPlusMinOne($date) {
  * Валидация файла на тип image
  * @param string $name - значение для валидации;
  */
-function validateFile($file) {
+function validateFileAndTypeImage($file) {
     if (empty($_FILES['lot-image']['name'])) {
         return  'Вы не загрузили файл';
     }

@@ -1,17 +1,17 @@
 <?php
 require "init.php";
 
-if (!$is_auth) {
-  $seconds = 6;
-  header("Refresh: $seconds; url=/");
-  $error = "Вы не вошли на сайт, через $seconds секунд вас перенаправит на главную страницу сайта.";
-  showErrorTemplateAndDie([
-    "categories" => $categories,
-    "error" => $error,
-    "user_name" => $user_name,
-    "is_auth" => $is_auth
-  ]);
-}
+// if (!$is_auth) {
+//   $seconds = 6;
+//   header("Refresh: $seconds; url=/");
+//   $error = "Вы не вошли на сайт, через $seconds секунд вас перенаправит на главную страницу сайта.";
+//   showErrorTemplateAndDie([
+//     "categories" => $categories,
+//     "error" => $error,
+//     "user_name" => $user_name,
+//     "is_auth" => $is_auth
+//   ]);
+// }
 
 $errors = [];
 
@@ -39,7 +39,7 @@ if ($_SERVER['REQUEST_METHOD'] === "POST") {
       return validateLength($lot["message"], 10, 1000);
     },
     "lot-image" => function () use ($lot) {
-      return validateFile($lot["lot-image"]);
+      return validateFileAndTypeImage($lot["lot-image"]);
     },
     "lot-rate" => function () use ($lot) {
       return validateValueOnInteger($lot["lot-rate"]);
@@ -62,42 +62,41 @@ if ($_SERVER['REQUEST_METHOD'] === "POST") {
     foreach ($lot as $key => $value) {
       if (isset($rules[$key])) {
         $rule = $rules[$key];
-        $errors[$key] = $rule(); 
+        $errors[$key] = $rule();
       }
     }
-  } 
-  
-  $errors = array_filter($errors);
+    
+    $errors = array_filter($errors);
 
-  if (!count($errors)) {
-    $uploadDir = 'uploads/';
-    $tmp_name = $_FILES['lot-image']['tmp_name'];
-    $path = $_FILES['lot-image']['name'];
-    $filename = uniqid() . "." . substr(mime_content_type($tmp_name), 6);
-    $filePath = $uploadDir . $filename;
-    move_uploaded_file($tmp_name, $filePath);
-    $lot['path'] = $filePath;
+    if (!count($errors)) {
+      $uploadDir = 'uploads/';
+      $tmp_name = $lot['lot-image']['tmp_name'];
+      $path = $lot['lot-image']['name'];
+      $filename = uniqid() . "." . substr(mime_content_type($tmp_name), 6);
+      $filePath = $uploadDir . $filename;
+      move_uploaded_file($tmp_name, $filePath);
+      $lot['path'] = $filePath;
 
-    $sqlLot = "INSERT INTO lots (name, description, start_price, image, step, date_completion, user_id, category_id) VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
-    $stmt = db_get_prepare_stmt($linkDB, $sqlLot, [
-      $lot["lot-name"],
-      $lot["message"],
-      $lot["lot-rate"],
-      $lot["path"],
-      $lot["lot-step"],
-      $lot["lot-date"],
-      $userID,
-      $lot["category"]
-    ]);
-    $result = mysqli_stmt_execute($stmt);
+      $sqlLot = "INSERT INTO lots (name, description, start_price, image, step, date_completion, user_id, category_id) VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
+      $stmt = db_get_prepare_stmt($linkDB, $sqlLot, [
+        $lot["lot-name"],
+        $lot["message"],
+        $lot["lot-rate"],
+        $lot["path"],
+        $lot["lot-step"],
+        $lot["lot-date"],
+        $userID,
+        $lot["category"]
+      ]);
+      $result = mysqli_stmt_execute($stmt);
 
-    if ($result) {
-      $lot_id = mysqli_insert_id($linkDB);
+      if ($result) {
+        $lot_id = mysqli_insert_id($linkDB);
 
-      header("Location: lot.php?id=" . $lot_id);
-      die;
+        header("Location: lot.php?id=" . $lot_id);
+        die;
+      }
     }
-
   }
 
   $content = include_template(
@@ -129,3 +128,5 @@ $layout = include_template(
 );
 
 print($layout);
+var_dump($lot);
+var_dump($errors);
