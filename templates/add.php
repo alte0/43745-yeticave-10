@@ -43,8 +43,8 @@
         </label>
       </div>
       <span class="form__error">
-        <?= isset($errors) && !isset($errors["file"]) ? "Выбирите изображение заново" : "" ?>
-        <?= $errors["file"] ?? "" ?>
+        <?= isset($errors) && !isset($errors["lot-image"]) ? "Выбирите изображение заново" : "" ?>
+        <?= $errors["lot-image"] ?? "" ?>
       </span>
     </div>
     <div class="form__container-three">
