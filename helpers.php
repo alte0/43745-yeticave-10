@@ -236,7 +236,8 @@ function showErrorTemplateAndDie(array $data) {
  * @return void
  */
 function getPostVal($name) {
-    return $_POST[$name] ?? "";
+    // htmlentities для сохранения кавычек
+    return htmlentities($_POST[$name]) ?? "";
 }
 /**
  * Валидация строки
