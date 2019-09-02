@@ -8,14 +8,14 @@
       <?php endforeach; ?>
     </ul>
   </nav>
-  <form class="form form--add-lot container <?= isset($errors) ? "form--invalid" : "" ?>" action="add.php" method="post" enctype="multipart/form-data">
+  <form class="form form--add-lot container <?= isset($errors) && !empty($errors) ? "form--invalid" : "" ?>" action="add.php" method="post" enctype="multipart/form-data">
     <!-- form--invalid -->
     <h2>Добавление лота</h2>
     <div class="form__container-two">
       <div class="form__item <?= isset($errors["lot-name"]) ? "form__item--invalid" : "" ?>">
         <!-- form__item--invalid -->
         <label for="lot-name">Наименование <sup>*</sup></label>
-        <input id="lot-name" type="text" name="lot-name" placeholder="Введите наименование лота" value="<?= getPostVal("lot-name") ?>">
+        <input id="lot-name" type="text" name="lot-name" placeholder="Введите наименование лота" value='<?= getPostVal("lot-name") ?>'>
         <span class="form__error">Введите наименование лота<?= addCommaAndSpaceText($errors["lot-name"]) ?? "" ?></span>
       </div>
       <div class="form__item <?= isset($errors["category"]) ? "form__item--invalid" : "" ?>">
@@ -43,8 +43,8 @@
         </label>
       </div>
       <span class="form__error">
-        <?= isset($errors) && !isset($errors["file"]) ? "Выбирите изображение заново" : "" ?>
-        <?= $errors["file"] ?? "" ?>
+        <?= isset($errors) && !isset($errors["lot-image"]) ? "Выбирите изображение заново" : "" ?>
+        <?= $errors["lot-image"] ?? "" ?>
       </span>
     </div>
     <div class="form__container-three">

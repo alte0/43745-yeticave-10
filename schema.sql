@@ -9,7 +9,7 @@ CREATE TABLE `users` (
     `email` VARCHAR(255) NOT NULL UNIQUE, 
     `name` VARCHAR(255) NOT NULL , 
     `password` VARCHAR(255) NOT NULL , 
-    `image` VARCHAR(255) NOT NULL , 
+    `image` VARCHAR(255) DEFAULT NULL , 
     `contacts` VARCHAR(255) NOT NULL
   ) 
   ENGINE = InnoDB 

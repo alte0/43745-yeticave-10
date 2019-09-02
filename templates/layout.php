@@ -23,27 +23,27 @@
           <input class="main-header__search-btn" type="submit" name="find" value="Найти">
         </form>
         <?php if ($is_auth == 1) : ?>
-        <a class="main-header__add-lot button" href="add.php">Добавить лот</a>
+          <a class="main-header__add-lot button" href="add.php">Добавить лот</a>
         <?php endif; ?>
 
         <nav class="user-menu">
 
           <!-- здесь должен быть PHP код для показа меню и данных пользователя -->
           <?php if ($is_auth == 1) : ?>
-          <div class="user-menu__logged">
-            <p><?= clearStrDataTags($user_name) ?></p>
-            <a class="user-menu__bets" href="pages/my-bets.html">Мои ставки</a>
-            <a class="user-menu__logout" href="#">Выход</a>
-          </div>
+            <div class="user-menu__logged">
+              <p><?= clearStrDataTags($user_name) ?></p>
+              <a class="user-menu__bets" href="pages/my-bets.html">Мои ставки</a>
+              <a class="user-menu__logout" href="#">Выход</a>
+            </div>
           <?php else : ?>
-          <ul class="user-menu__list">
-            <li class="user-menu__item">
-              <a href="#">Регистрация</a>
-            </li>
-            <li class="user-menu__item">
-              <a href="#">Вход</a>
-            </li>
-          </ul>
+            <ul class="user-menu__list">
+              <li class="user-menu__item">
+                <a href="/sign-up.php">Регистрация</a>
+              </li>
+              <li class="user-menu__item">
+                <a href="/login.php">Вход</a>
+              </li>
+            </ul>
           <?php endif; ?>
         </nav>
       </div>
@@ -57,9 +57,9 @@
       <ul class="nav__list container">
         <!--заполните этот список из массива категорий-->
         <?php foreach ($categories as $item) : ?>
-        <li class="nav__item">
-          <a href="pages/all-lots.html"><?= $item["name"] ?></a>
-        </li>
+          <li class="nav__item">
+            <a href="pages/all-lots.html"><?= $item["name"] ?></a>
+          </li>
         <?php endforeach; ?>
       </ul>
     </nav>
@@ -99,7 +99,7 @@
         </a>
       </div>
       <?php if ($is_auth == 1) : ?>
-      <a class="main-header__add-lot button" href="add.php">Добавить лот</a>
+        <a class="main-header__add-lot button" href="add.php">Добавить лот</a>
       <?php endif; ?>
       <div class="main-footer__developed-by">
         <span class="visually-hidden">Разработано:</span>

@@ -1,4 +1,7 @@
 <?php
+
+use phpDocumentor\Reflection\Types\Integer;
+
 /**
  * Проверяет переданную дату на соответствие формату 'ГГГГ-ММ-ДД'
  *
@@ -228,44 +231,22 @@ function showErrorTemplateAndDie(array $data) {
     die;
  }
 /**
- * Функция получения url для показа лота по id.
- * @param integer $id - ассоциативный массив для передачи данных;
- * @return string Итоговый url
- */
-function getUrlLotId($id):string {
-    $params = $_GET;
-    $params['id'] = $id;
-    $query = http_build_query($params);
-    return "/lot.php?" . $query;
- }
-/**
  * Получения значения из $_POST для заполнеиня данных в форме.
  * @param string $name - имя ключа из массива $_POST для получения значения;
  * @return void
  */
 function getPostVal($name) {
-    return $_POST[$name] ?? "";
-}
-/**
- * Валидация поля на заполненость
- * @param string $name - имя ключа из массива $_POST для получения значения;
- * @return void
- */
-function validateFilled($name) {
-    if (empty($_POST[$name])) {
-        return "Это поле должно быть заполнено";
-    }
-
-    return null;
+    // htmlentities для сохранения кавычек
+    return isset($_POST[$name]) ? htmlentities($_POST[$name]) : "";
 }
 /**
  * Валидация строки
- * @param string $name - имя ключа из массива $_POST для валидации;
+ * @param string $value - значение для валидации;
  * @param integer $min - минимальное значение длины строки;
  * @param integer $max - максимальное значение длины строки;
  */
-function validateLength(string $name, int $min, int $max) {
-    $len = strlen($_POST[$name]);
+function validateLength(string $value, int $min, int $max) {
+    $len = strlen($value);
 
     if ($len < $min or $len > $max) {
         return "Значение должно быть от $min до $max символов";
@@ -275,13 +256,19 @@ function validateLength(string $name, int $min, int $max) {
 }
 /**
  * Валидация id категории из масива
- * @param string $name - имя ключа из массива $_POST для валидации;
- * @param array $allowed_list - массив котором проверяем значение;
+ * @param string $value - значение для валидации;
+ * @param array $link - соединение с БД;
  */
-function validateCategory(string $name, array $allowed_list) {
-    $id = $_POST[$name];
+function validateCategory($value, $link) {
+    if (mysqli_connect_errno()) {
+        return "Не удалось проверить категорию";
+    }
 
-    if (!in_array($id, $allowed_list)) {
+    $sql = "SELECT id FROM сategories WHERE id = $value";
+    $result = mysqli_query($link, $sql);
+    $arr = mysqli_fetch_array($result, MYSQLI_ASSOC);
+    
+    if ($arr["id"] !== $value) {
         return "Указана несуществующая категория";
     }
 
@@ -289,11 +276,9 @@ function validateCategory(string $name, array $allowed_list) {
 }
 /**
  * Валидация целого числа и и больше нуля
- * @param string $name - имя ключа из массива $_POST для валидации;
+ * @param string $value - значение для валидации;
  */
-function validateValueOnInteger($name) {
-    $num = $_POST[$name];
-
+function validateValueOnInteger($num) {
     if (!(is_numeric($num) && $num > 0)) {
         return "Значение должно быть целым числом и больше нуля";
     }
@@ -302,10 +287,9 @@ function validateValueOnInteger($name) {
 }
 /**
  * Валидация даты на формат и дата больше текущей даты, хотя бы на один день
- * @param string $name - имя ключа из массива $_POST для валидации;
+ * @param string $date - значение для валидации;
  */
-function validateFormatDateAndPlusMinOne($name) {
-    $date = $_POST[$name];
+function validateFormatDateAndPlusMinOne($date) {
     $today = date("Y-m-d");
 
     if (!(is_date_valid($date) && strtotime($date) >= strtotime($today) + 86400)) {
@@ -316,14 +300,18 @@ function validateFormatDateAndPlusMinOne($name) {
 }
 /**
  * Валидация файла на тип image
- * @param string $name - имя ключа из массива $_POST для валидации;
+ * @param string $name - значение для валидации;
  */
-function validateFileImageType($name) {
-    $filePath = $_FILES[$name]["tmp_name"];
+function validateFileAndTypeImage($file) {
+    if (empty($_FILES['lot-image']['name'])) {
+        return  'Вы не загрузили файл';
+    }
+
+    $filePath = $file["tmp_name"];
     $fileType = mime_content_type($filePath);
 
     if (!($fileType === "image/png" || $fileType === "image/jpeg")) {
-        return "Изображение должно быть png или jpeg";
+        return "Изображение должно быть jpeg, jpg или png";
     }
 
     return null;
@@ -337,4 +325,29 @@ function addCommaAndSpaceText($str) {
     $comma = ", ";
 
     return $comma . $str;
+}
+/**
+ * Валидация email
+ * @param string $value - значение для валидации;
+ * @param $link - соединение с БД;
+ */
+function validateEmail($email, $link)
+{
+    if (mysqli_connect_errno()) {
+        return "Не удалось проверить email";
+    }
+
+    if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
+        return "Вы ввели - не email";
+    }
+
+    $sql = "SELECT email FROM users WHERE email = '$email'";
+    $result = mysqli_query($link, $sql);
+    $arr = mysqli_fetch_array($result, MYSQLI_ASSOC);
+
+    if ($arr["email"] === $email) {
+        return "Этот email уже зарегестрирован";
+    }
+
+    return null;
 }
