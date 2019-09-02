@@ -329,16 +329,16 @@ function addCommaAndSpaceText($str) {
 /**
  * Валидация email
  * @param string $value - значение для валидации;
- * @param array $link - соединение с БД;
+ * @param $link - соединение с БД;
  */
 function validateEmail($email, $link)
 {
     if (mysqli_connect_errno()) {
-        return "Не удалось проверить emal";
+        return "Не удалось проверить email";
     }
 
     if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
-        return "Вы ввели - не emal";
+        return "Вы ввели - не email";
     }
 
     $sql = "SELECT email FROM users WHERE email = '$email'";
