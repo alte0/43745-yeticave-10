@@ -5,6 +5,7 @@ require "config/php-ini.php";
 $dbConf = require_once 'config/db.php';
 $today = date("Y-m-d H:i:s");
 $categories = [];
+$saltPwd = "S@5s";
 
 $linkDB = mysqli_connect($dbConf["urlDB"], $dbConf["userDB"], $dbConf["passwordDB"], $dbConf["nameDB"]);
 

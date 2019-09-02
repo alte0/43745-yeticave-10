@@ -237,7 +237,7 @@ function showErrorTemplateAndDie(array $data) {
  */
 function getPostVal($name) {
     // htmlentities для сохранения кавычек
-    return htmlentities($_POST[$name]) ?? "";
+    return isset($_POST[$name]) ? htmlentities($_POST[$name]) : "";
 }
 /**
  * Валидация строки
@@ -257,14 +257,14 @@ function validateLength(string $value, int $min, int $max) {
 /**
  * Валидация id категории из масива
  * @param string $value - значение для валидации;
- * @param array $allowed_list - массив котором проверяем значение;
+ * @param array $link - соединение с БД;
  */
 function validateCategory($value, $link) {
-    $sql = "SELECT id FROM сategories WHERE id = $value";
     if (mysqli_connect_errno()) {
         return "Не удалось проверить категорию";
     }
 
+    $sql = "SELECT id FROM сategories WHERE id = $value";
     $result = mysqli_query($link, $sql);
     $arr = mysqli_fetch_array($result, MYSQLI_ASSOC);
     
@@ -325,4 +325,29 @@ function addCommaAndSpaceText($str) {
     $comma = ", ";
 
     return $comma . $str;
+}
+/**
+ * Валидация email
+ * @param string $value - значение для валидации;
+ * @param array $link - соединение с БД;
+ */
+function validateEmail($email, $link)
+{
+    if (mysqli_connect_errno()) {
+        return "Не удалось проверить emal";
+    }
+
+    if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
+        return "Вы ввели - не emal";
+    }
+
+    $sql = "SELECT email FROM users WHERE email = '$email'";
+    $result = mysqli_query($link, $sql);
+    $arr = mysqli_fetch_array($result, MYSQLI_ASSOC);
+
+    if ($arr["email"] === $email) {
+        return "Этот email уже зарегестрирован";
+    }
+
+    return null;
 }

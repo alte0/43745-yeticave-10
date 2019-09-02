@@ -125,5 +125,3 @@ $layout = include_template(
 );
 
 print($layout);
-var_dump($lot);
-var_dump($errors);
