@@ -1,29 +1,29 @@
 <?php
 require "init.php";
 
-// if (!$is_auth) {
-//   $seconds = 6;
-//   header("Refresh: $seconds; url=/");
-//   $error = "Вы не вошли на сайт, через $seconds секунд вас перенаправит на главную страницу сайта.";
-//   showErrorTemplateAndDie([
-//     "categories" => $categories,
-//     "error" => $error,
-//     "user_name" => $user_name,
-//     "is_auth" => $is_auth
-//   ]);
-// }
+if (!$is_auth) {
+  $seconds = 6;
+  header("Refresh: $seconds; url=/");
+  $error = "Вы не вошли на сайт, через $seconds секунд вас перенаправит на главную страницу сайта.";
+  showErrorTemplateAndDie([
+    "categories" => $categories,
+    "error" => $error,
+    "user_name" => $user_name,
+    "is_auth" => $is_auth
+  ]);
+}
 
 $errors = [];
 
 if ($_SERVER['REQUEST_METHOD'] === "POST") {
   $lot = [
-    "lot-name" => empty($_POST["lot-name"]) ? trim($_POST["lot-name"]) : '',
-    "category" => empty($_POST["category"]) && is_numeric($_POST["category"]) ? trim($_POST["category"]) : 0,
-    "message" => empty($_POST["message"]) ? trim($_POST["message"]) : '',
-    "lot-image" => empty($_FILES["lot-image"]) ? $_FILES["lot-image"] : [],
-    "lot-rate" => empty($_POST["lot-rate"]) ? trim($_POST["lot-rate"]) : '',
-    "lot-step" => empty($_POST["lot-step"]) ? trim($_POST["lot-step"]) : '',
-    "lot-date" => empty($_POST["lot-date"]) ? trim($_POST["lot-date"]) : ''
+    "lot-name" => !empty($_POST["lot-name"]) ? trim($_POST["lot-name"]) : '',
+    "category" => !empty($_POST["category"]) && is_numeric($_POST["category"]) ? trim($_POST["category"]) : 0,
+    "message" => !empty($_POST["message"]) ? trim($_POST["message"]) : '',
+    "lot-image" => !empty($_FILES["lot-image"]) ? $_FILES["lot-image"] : [],
+    "lot-rate" => !empty($_POST["lot-rate"]) ? trim($_POST["lot-rate"]) : '',
+    "lot-step" => !empty($_POST["lot-step"]) ? trim($_POST["lot-step"]) : '',
+    "lot-date" => !empty($_POST["lot-date"]) ? trim($_POST["lot-date"]) : ''
   ];
 
   $required = ["lot-name", "category", "message", "lot-rate", "lot-step", "lot-date"];

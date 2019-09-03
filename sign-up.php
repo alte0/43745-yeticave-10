@@ -5,10 +5,10 @@ $errors = [];
 
 if ($_SERVER['REQUEST_METHOD'] === "POST") {
   $user = [
-    "email" => empty($_POST["email"]) ? trim($_POST["email"]) : '',
-    "password" => empty($_POST["password"]) ? trim($_POST["password"]) : '',
-    "name" => empty($_POST["name"]) ? trim($_POST["name"]) : '',
-    "message" => empty($_POST["message"]) ? trim($_POST["message"]) : ''
+    "email" => isset($_POST["email"]) ? trim($_POST["email"]) : '',
+    "password" => isset($_POST["password"]) ? trim($_POST["password"]) : '',
+    "name" => isset($_POST["name"]) ? trim($_POST["name"]) : '',
+    "message" => isset($_POST["message"]) ? trim($_POST["message"]) : ''
   ];
 
   $required = ["email", "password", "name", "message"];
@@ -89,3 +89,4 @@ $layout = include_template(
 );
 
 print($layout);
+var_dump($errors);
