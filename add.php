@@ -3,6 +3,7 @@ require "init.php";
 
 if (!$is_auth) {
   $seconds = 6;
+  header('HTTP/1.0 403 Forbidden', true, 403);
   header("Refresh: $seconds; url=/");
   $error = "Вы не вошли на сайт, через $seconds секунд вас перенаправит на главную страницу сайта.";
   showErrorTemplateAndDie([
