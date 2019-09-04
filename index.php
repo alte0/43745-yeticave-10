@@ -13,8 +13,8 @@ if (!$resultAnnouncements) {
         "error" => $error,
         "categories" => $categories,
         "content" => $content,
-        "user_name" => isset($_SESSION["userInfo"]) ? $_SESSION["userInfo"]["name"] : "",
-        "is_auth" => isset($_SESSION["userInfo"])
+        "user_name" => $user_name,
+        "is_auth" => $is_auth
     ]);
 }
 
