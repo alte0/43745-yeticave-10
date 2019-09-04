@@ -1,11 +1,16 @@
 <?php
+
+session_start();
+
 require "helpers.php";
-require "data-test.php";
 require "config/php-ini.php";
 $dbConf = require_once 'config/db.php';
 $today = date("Y-m-d H:i:s");
 $categories = [];
 $saltPwd = "S@5s";
+$is_auth = isset($_SESSION["userInfo"]);
+$user_name = isset($_SESSION["userInfo"]) ? $_SESSION["userInfo"]["name"] : "";
+$userID = isset($_SESSION["userInfo"]) ? $_SESSION["userInfo"]["id"] : 0;
 
 $linkDB = mysqli_connect($dbConf["urlDB"], $dbConf["userDB"], $dbConf["passwordDB"], $dbConf["nameDB"]);
 

@@ -3,6 +3,7 @@ require "init.php";
 
 if (!$is_auth) {
   $seconds = 6;
+  header('HTTP/1.0 403 Forbidden', true, 403);
   header("Refresh: $seconds; url=/");
   $error = "Вы не вошли на сайт, через $seconds секунд вас перенаправит на главную страницу сайта.";
   showErrorTemplateAndDie([
@@ -17,13 +18,13 @@ $errors = [];
 
 if ($_SERVER['REQUEST_METHOD'] === "POST") {
   $lot = [
-    "lot-name" => isset($_POST["lot-name"]) ? trim($_POST["lot-name"]) : '',
-    "category" => isset($_POST["category"]) && is_numeric($_POST["category"]) ? trim($_POST["category"]) : 0,
-    "message" => isset($_POST["message"]) ? trim($_POST["message"]) : '',
-    "lot-image" => isset($_FILES["lot-image"]) ? $_FILES["lot-image"] : [],
-    "lot-rate" => isset($_POST["lot-rate"]) ? trim($_POST["lot-rate"]) : '',
-    "lot-step" => isset($_POST["lot-step"]) ? trim($_POST["lot-step"]) : '',
-    "lot-date" => isset($_POST["lot-date"]) ? trim($_POST["lot-date"]) : ''
+    "lot-name" => !empty($_POST["lot-name"]) ? trim($_POST["lot-name"]) : '',
+    "category" => !empty($_POST["category"]) && is_numeric($_POST["category"]) ? trim($_POST["category"]) : 0,
+    "message" => !empty($_POST["message"]) ? trim($_POST["message"]) : '',
+    "lot-image" => !empty($_FILES["lot-image"]) ? $_FILES["lot-image"] : [],
+    "lot-rate" => !empty($_POST["lot-rate"]) ? trim($_POST["lot-rate"]) : '',
+    "lot-step" => !empty($_POST["lot-step"]) ? trim($_POST["lot-step"]) : '',
+    "lot-date" => !empty($_POST["lot-date"]) ? trim($_POST["lot-date"]) : ''
   ];
 
   $required = ["lot-name", "category", "message", "lot-rate", "lot-step", "lot-date"];
@@ -59,7 +60,7 @@ if ($_SERVER['REQUEST_METHOD'] === "POST") {
   }
 
   foreach ($lot as $key => $value) {
-    if (isset($rules[$key])) {
+    if (isset($rules[$key]) && !isset($errors[$key])) {
       $rule = $rules[$key];
       $errors[$key] = $rule();
     }

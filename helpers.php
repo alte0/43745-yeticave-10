@@ -264,11 +264,13 @@ function validateCategory($value, $link) {
         return "Не удалось проверить категорию";
     }
 
-    $sql = "SELECT id FROM сategories WHERE id = $value";
-    $result = mysqli_query($link, $sql);
+    $sql = "SELECT id FROM сategories WHERE id = ?";
+    $stmt = db_get_prepare_stmt($link, $sql, [$value]);
+    mysqli_stmt_execute($stmt);
+    $result = mysqli_stmt_get_result($stmt);
     $arr = mysqli_fetch_array($result, MYSQLI_ASSOC);
     
-    if ($arr["id"] !== $value) {
+    if ($arr["id"] !== intval($value)) {
         return "Указана несуществующая категория";
     }
 
@@ -327,11 +329,11 @@ function addCommaAndSpaceText($str) {
     return $comma . $str;
 }
 /**
- * Валидация email
+ * Валидация email на регистрацию.
  * @param string $value - значение для валидации;
  * @param $link - соединение с БД;
  */
-function validateEmail($email, $link)
+function validateEmailSignUp($email, $link)
 {
     if (mysqli_connect_errno()) {
         return "Не удалось проверить email";
@@ -340,13 +342,27 @@ function validateEmail($email, $link)
     if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
         return "Вы ввели - не email";
     }
-
-    $sql = "SELECT email FROM users WHERE email = '$email'";
-    $result = mysqli_query($link, $sql);
+    
+    $sql = "SELECT email FROM users WHERE email = ?";
+    $stmt = db_get_prepare_stmt($link, $sql, [$email]);
+    mysqli_stmt_execute($stmt);
+    $result = mysqli_stmt_get_result($stmt);
     $arr = mysqli_fetch_array($result, MYSQLI_ASSOC);
 
     if ($arr["email"] === $email) {
         return "Этот email уже зарегестрирован";
+    }
+
+    return null;
+}
+/**
+ * Валидация email на вход
+ * @param string $value - значение для валидации;
+ */
+function validateEmailSignIn($email)
+{
+    if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
+        return "Вы ввели - не email";
     }
 
     return null;

@@ -26,6 +26,7 @@ if (isset($_GET["id"])) {
       'lot.php',
       [
         "lot" => $lot,
+        "is_auth" => $is_auth
       ]
     );
   }

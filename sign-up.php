@@ -1,21 +1,34 @@
 <?php
 require "init.php";
 
+if ($is_auth) {
+  $seconds = 6;
+  header('HTTP/1.0 403 Forbidden', true, 403);
+  header("Refresh: $seconds; url=/");
+  $error = "Вы уже зарегестрированны на сайте, через $seconds секунд вас перенаправит на главную страницу сайта.";
+  showErrorTemplateAndDie([
+    "categories" => $categories,
+    "error" => $error,
+    "user_name" => $user_name,
+    "is_auth" => $is_auth
+  ]);
+}
+
 $errors = [];
 
 if ($_SERVER['REQUEST_METHOD'] === "POST") {
   $user = [
-    "email" => isset($_POST["email"]) ? trim($_POST["email"]) : '',
-    "password" => isset($_POST["password"]) ? trim($_POST["password"]) : '',
-    "name" => isset($_POST["name"]) ? trim($_POST["name"]) : '',
-    "message" => isset($_POST["message"]) ? trim($_POST["message"]) : ''
+    "email" => !empty($_POST["email"]) ? trim($_POST["email"]) : '',
+    "password" => !empty($_POST["password"]) ? trim($_POST["password"]) : '',
+    "name" => !empty($_POST["name"]) ? trim($_POST["name"]) : '',
+    "message" => !empty($_POST["message"]) ? trim($_POST["message"]) : ''
   ];
 
   $required = ["email", "password", "name", "message"];
 
   $rules = [
     "email" => function () use ($user, $linkDB) {
-      return validateEmail($user["email"], $linkDB);
+      return validateEmailSignUp($user["email"], $linkDB);
     },
     "password" => function () use ($user) {
       return validateLength($user['password'], 6, 20);
@@ -35,7 +48,7 @@ if ($_SERVER['REQUEST_METHOD'] === "POST") {
   }
 
   foreach ($user as $key => $value) {
-    if (isset($rules[$key])) {
+    if (isset($rules[$key]) && !isset($errors[$key])) {
       $rule = $rules[$key];
       $errors[$key] = $rule();
     }
