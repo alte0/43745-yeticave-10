@@ -413,12 +413,14 @@ function getAgoText($today, $timeBet){
     $hours = (int)$interval->format('%H');
     // минут
     $minutes = (int)$interval->format('%I');
-    
+    var_dump($countDay);
+    var_dump($hours);
+    var_dump($minutes);
     if($countDay >= 1 && $countDay < 2) {
         return $yesterday . date('H:i', strtotime($timeBet));
     }
 
-    if($countDay === 0) {
+    if($countDay === 0 && $hours >= 1) {
         return ($hours === 1 ? "" : "$hours ") . get_noun_plural_form($hours, "Час", "Часа", "Часов") . " $ago";
     }
 
