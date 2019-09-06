@@ -367,3 +367,64 @@ function validateEmailSignIn($email)
 
     return null;
 }
+/**
+ * Получение лота по его id
+ * @param string $getId - передоваемый id;
+ */
+function getLotById($getId, $linkDB, array $otherData = []) {
+    extract($otherData);
+    $getId = intval($getId) < 0 ? 0 : intval($getId);
+    $sqlLot = "SELECT l.id, l.date_completion, l.name, l.start_price, l.image, l.category_id, l.step, l.description, c.name AS category_name, IFNULL(max(b.price), l.start_price) AS price FROM lots l INNER JOIN сategories c ON l.category_id = c.id LEFT JOIN bets b ON l.id = b.lot_id WHERE l.id = $getId";
+    $resultLot = mysqli_query($linkDB, $sqlLot);
+
+    if (!$resultLot || mysqli_num_rows($resultLot) === 0) {
+        $error = "Произошла ошибка в базе данных - " . mysqli_error($linkDB);
+
+        showErrorTemplateAndDie([
+        "error" => $error,
+        "categories" => $categories,
+        "user_name" => $user_name,
+        "is_auth" => $is_auth
+        ]);
+    }
+
+    return mysqli_fetch_all($resultLot, MYSQLI_ASSOC)[0];
+}
+/**
+ * Получение времени в формате 5 минут назад, 20 минут назад, час назад, Вчера, в 21:30, 19.03.17 в 08:21
+ * @param string $time - время;
+ * @param string $today - сегодняшняя дата и время;
+ * @return string 
+ */
+function getAgoText($today, $timeBet){
+    $ago = "назад";
+    // $yesterday = "Вчера, в 21:30";
+    $yesterday = "Вчера, в ";
+    // $defaultText = "19.03.17 в 08:21";
+    // $defaultText = " в ";
+    $textResult =  get_noun_plural_form(1, "минута", "минуты", "минут") . " " . $ago;
+
+    $datetime1 = date_create($timeBet);
+    $datetime2 = date_create($today);
+    $interval = date_diff($datetime1, $datetime2);
+    // дней 
+    $countDay = (int)$interval->format('%a');
+    // часов
+    $hours = (int)$interval->format('%H');
+    // минут
+    $minutes = (int)$interval->format('%I');
+    
+    if($countDay >= 1 && $countDay < 2) {
+        return $yesterday . date('H:i', strtotime($timeBet));
+    }
+
+    if($countDay === 0) {
+        return ($hours === 1 ? "" : "$hours ") . get_noun_plural_form($hours, "Час", "Часа", "Часов") . " $ago";
+    }
+
+    if($countDay === 0 && $hours === 0 ) {
+        return "$minutes " . get_noun_plural_form($minutes, "минута", "минуты", "минут") . " $ago";
+    }
+
+    return date('d.m.y в H:i', strtotime($timeBet));
+}

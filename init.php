@@ -1,7 +1,7 @@
 <?php
 
 session_start();
-
+date_default_timezone_set("Asia/Yekaterinburg");
 require "helpers.php";
 require "config/php-ini.php";
 $dbConf = require_once 'config/db.php';

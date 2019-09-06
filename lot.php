@@ -1,24 +1,45 @@
 <?php
 require "init.php";
 
-if (isset($_GET["id"])) {
-  $idLot = intval($_GET["id"]) < 0 ? 0 : intval($_GET["id"]);
-  $sqlLot = "SELECT l.id, l.date_completion, l.name, l.start_price, l.image, l.category_id, l.step, l.description, c.name AS category_name, IFNULL(max(b.price), l.start_price) AS price FROM lots l INNER JOIN сategories c ON l.category_id = c.id LEFT JOIN bets b ON l.id = b.lot_id WHERE l.id = $idLot";
-  $resultLot = mysqli_query($linkDB, $sqlLot);
-  
-  if (!$resultLot || mysqli_num_rows($resultLot) === 0) {
-    $error = "Произошла ошибка в базе данных - " . mysqli_error($linkDB);
+$lot = getLotById($_GET["id"], $linkDB, ["categories" => $categories, "user_name" => $user_name, "is_auth" => $is_auth]);
 
-    showErrorTemplateAndDie([
-      "error" => $error,
-      "categories" => $categories,
-      "user_name" => $user_name,
-      "is_auth" => $is_auth
+if ($is_auth && isset($_GET["id"]) && $_SERVER["REQUEST_METHOD"] === "POST") {
+  $errors = [];
+
+  $minBet = $lot["price"] + $lot["step"];
+
+  $cost = !empty($_POST["cost"]) ? trim($_POST["cost"]) : '';
+
+  if ($cost >= $minBet) {
+    $sqlBet = "INSERT INTO bets (price, user_id, lot_id) VALUES (?, ?, ?)";
+    $stmt = db_get_prepare_stmt($linkDB, $sqlBet, [
+      $cost,
+      $userID,
+      $lot["id"]
     ]);
-  }
-  
-  $lot = mysqli_fetch_all($resultLot, MYSQLI_ASSOC)[0];
+    $result = mysqli_stmt_execute($stmt);
 
+    if (!$result) {
+      $errors["cost"] = "Не удалось добавить ставку! Попробуйте ещё раз";
+    }
+
+    $lot = getLotById($lot["id"], $linkDB, ["categories" => $categories, "user_name" => $user_name, "is_auth" => $is_auth]);
+  } else {
+    $errors["cost"] = "Ваша ставка меньше минимальной ставки!";
+  }
+
+  $title = "Лот {$lot["name"]} - YetiCave";
+
+  $content = include_template(
+    'lot.php',
+    [
+      "lot" => $lot,
+      "is_auth" => $is_auth,
+      "errors" => $errors
+    ]
+  );
+
+} elseif (isset($_GET["id"])) {
   if (isset($lot["id"])) {
     $title = "Лот {$lot["name"]} - YetiCave";
   
