@@ -398,11 +398,7 @@ function getLotById($getId, $linkDB, array $otherData = []) {
  */
 function getAgoText($today, $timeBet){
     $ago = "назад";
-    // $yesterday = "Вчера, в 21:30";
     $yesterday = "Вчера, в ";
-    // $defaultText = "19.03.17 в 08:21";
-    // $defaultText = " в ";
-    $textResult =  get_noun_plural_form(1, "минута", "минуты", "минут") . " " . $ago;
 
     $datetime1 = date_create($timeBet);
     $datetime2 = date_create($today);
