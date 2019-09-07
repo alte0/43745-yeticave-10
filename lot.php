@@ -1,9 +1,9 @@
 <?php
 require "init.php";
 
-$lot = getLotById($_GET["id"], $linkDB, ["categories" => $categories, "user_name" => $user_name, "is_auth" => $is_auth]);
 
 if ($is_auth && isset($_GET["id"]) && $_SERVER["REQUEST_METHOD"] === "POST") {
+  $lot = getLotById($_GET["id"], $linkDB, ["categories" => $categories, "user_name" => $user_name, "is_auth" => $is_auth]);
   $errors = [];
 
   $minBet = $lot["price"] + $lot["step"];
@@ -40,6 +40,7 @@ if ($is_auth && isset($_GET["id"]) && $_SERVER["REQUEST_METHOD"] === "POST") {
   );
 
 } elseif (isset($_GET["id"])) {
+  $lot = getLotById($_GET["id"], $linkDB, ["categories" => $categories, "user_name" => $user_name, "is_auth" => $is_auth]);
   if (isset($lot["id"])) {
     $title = "Лот {$lot["name"]} - YetiCave";
   
