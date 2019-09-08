@@ -15,9 +15,7 @@
       <?php foreach ($myBets as $item) : ?>
         <?php
           $time = calcDateExpiration($item["date_completion"]);
-          $url = "/lot.php?id={$item["id"]}";
-          $name = $item["name"];
-          $isTimeEnd = (int)$time["hours"] === 0 && (int)$time["minutes"] === 0 && (int)$time["seconds"] === 0;
+          $isTimeEnd = (int) $time["hours"] === 0 && (int) $time["minutes"] === 0 && (int) $time["seconds"] === 0;
           ?>
         <tr class="rates__item <?= $isTimeEnd ? "rates__item--end" : "" ?>">
           <td class="rates__info">
@@ -26,11 +24,11 @@
             </div>
             <?php if (!empty($item["contacts"])) : ?>
               <div>
-                <h3 class="rates__title"><a href="<?= $url ?>"><?= $name ?></a></h3>
+                <h3 class="rates__title"><a href="/lot.php?id=<?= $item["id"] ?>"><?= clearStrDataTags($item["name"]) ?></a></h3>
                 <p><?= clearStrDataTags($item["contacts"]) ?></p>
               </div>
             <?php else : ?>
-              <h3 class="rates__title"><a href="<?= $url ?>"><?= $name ?></a></h3>
+              <h3 class="rates__title"><a href="/lot.php?id=<?= $item["id"] ?>"><?= clearStrDataTags($item["name"]) ?></a></h3>
             <?php endif; ?>
           </td>
           <td class="rates__category">
