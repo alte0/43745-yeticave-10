@@ -2,52 +2,42 @@
 require "init.php";
 
 $errors = [];
-$isMyLot = false;
-$isMyLastBet = false;
-$isEndTime = false;
+$isVisibleForm = true;
 
 if (isset($_GET["id"])) {
-  $lot = getLotById($_GET["id"], $linkDB, ["categories" => $categories, "user_name" => $user_name, "is_auth" => $is_auth]);
-  
-  $title = "Лот " . clearStrDataTags($lot["name"]) . " - YetiCave";
+  $arrData = ["categories" => $categories, "user_name" => $user_name, "is_auth" => $is_auth];
+  $lot = getLotById($_GET["id"], $linkDB, $arrData);
+  $bets = getBetsForId($_GET["id"], $linkDB, $arrData);
+}
 
-  $checkRulesBase = ["whose-lot", "whose-last-bet", "date-completion-bet"];
+$checkRulesBase = ["whose-lot", "whose-last-bet", "date-completion-bet"];
 
-  $rulesBase = [
-    "whose-lot" => function () use ($userID, $lot) {
-      return validateWhoseLot($userID, $lot["user_id"]);
-    },
-    "whose-last-bet" => function () use ($userID, $lot) {
-      return validateWhoseLastBet($userID, $lot["last_bet_user_id"]);
-    },
-    "date-completion-bet" => function () use ($lot, $today) {
-      return validateDateCompletionBet($lot["date_completion"], $today);
-    },
-  ];
+$rulesBase = [
+  "whose-lot" => function () use ($userID, $lot) {
+    return validateWhoseLot($userID, $lot["user_id"]);
+  },
+  "whose-last-bet" => function () use ($userID, $lot) {
+    return validateWhoseLastBet($userID, $lot["last_bet_user_id"]);
+  },
+  "date-completion-bet" => function () use ($lot, $today) {
+    return validateDateCompletionBet($lot["date_completion"], $today);
+  },
+];
 
-  foreach ($checkRulesBase as $key) {
-    if (isset($rulesBase[$key])) {
-      $ruleBase = $rulesBase[$key];
-      $errors[$key] = $ruleBase();
-    }
-  }
-
-  $errors = array_filter($errors);
-
-  if (isset($errors["whose-lot"])) {
-    $isMyLot = !$isMyLot;
-  }
-
-  if (isset($errors["whose-last-bet"])) {
-    $isMyLastBet = !$isMyLastBet;
-  }
-
-  if (isset($errors["date-completion-bet"])) {
-    $isEndTime = !$isEndTime;
+foreach ($checkRulesBase as $key) {
+  if (isset($rulesBase[$key])) {
+    $ruleBase = $rulesBase[$key];
+    $errors[$key] = $ruleBase();
   }
 }
 
-if ($is_auth && isset($_GET["id"]) && $_SERVER["REQUEST_METHOD"] === "POST") {
+$errors = array_filter($errors);
+
+if (!$is_auth || isset($errors["whose-lot"]) || isset($errors["whose-last-bet"]) || isset($errors["date-completion-bet"])) {
+  $isVisibleForm = !$isVisibleForm;
+}
+
+if ($is_auth && $_SERVER["REQUEST_METHOD"] === "POST" && $isVisibleForm) {
   $bet = [
     "cost" => !empty($_POST["cost"]) ? trim($_POST["cost"]) : ''
   ];
@@ -93,14 +83,15 @@ if ($is_auth && isset($_GET["id"]) && $_SERVER["REQUEST_METHOD"] === "POST") {
 }
 
 if (isset($lot["id"])) {
+  $title = "Лот " . $lot["name"] . " - YetiCave";
   $content = include_template(
     'lot.php',
     [
       "lot" => $lot,
+      "bets" => $bets,
       "is_auth" => $is_auth,
-      "isMyLot" => $isMyLot,
-      "isMyLastBet" => $isMyLastBet,
-      "isEndTime" => $isEndTime,
+      "isVisibleForm" => $isVisibleForm,
+      "today" => $today,
       "errors" => $errors
     ]
   );

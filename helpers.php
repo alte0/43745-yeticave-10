@@ -393,6 +393,31 @@ function getLotById($getId, $linkDB, array $otherData = []) {
     return mysqli_fetch_array($resultLot, MYSQLI_ASSOC);
 }
 /**
+ * Получение ставок на лот по его id
+ * @param string $getId - передоваемый id;
+ * @param resource $linkDB - соединение с бд;
+ * @param array $otherData - дополнительные данные в массиве;
+ */
+function getBetsForId($getId, $linkDB, array $otherData = []) {
+    extract($otherData);
+    $getId = intval($getId) < 0 ? 0 : intval($getId);
+    $sqlBets = "SELECT b.date_create AS date, b.price, u.name FROM bets b INNER JOIN users u ON u.id = b.user_id WHERE lot_id = $getId ORDER BY date_create DESC";
+    $resultLot = mysqli_query($linkDB, $sqlBets);
+
+    if (!$resultLot) {
+        $error = "Произошла ошибка в базе данных - " . mysqli_error($linkDB);
+
+        showErrorTemplateAndDie([
+        "error" => $error,
+        "categories" => $categories,
+        "user_name" => $user_name,
+        "is_auth" => $is_auth
+        ]);
+    }
+
+    return mysqli_fetch_all($resultLot, MYSQLI_ASSOC);
+}
+/**
  * Получение времени в формате 5 минут назад, 20 минут назад, час назад, Вчера, в 21:30, 19.03.17 в 08:21
  * @param string $time - время;
  * @param string $today - сегодняшняя дата и время;
@@ -453,7 +478,7 @@ function validateWhoseLastBet($userID, $last_bet_user_id) {
     return null;
 }
 /**
- * Валидация, проверяем чья последняя ставка на лот
+ * Валидация, проверяем закончилось ли время на лот
  * @param integer $userID - id залогиного пользователя;
  * @param integer $lotUserId - id пользователя создавшего лот;
  * @param boolean $isMyLot - признак на принадлежность лота $userID === $lotUserId;
