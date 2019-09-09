@@ -2,10 +2,10 @@
 require "init.php";
 
 $errors = [];
+$arrData = ["categories" => $categories, "user_name" => $user_name, "is_auth" => $is_auth];
 $isVisibleForm = true;
 
 if (isset($_GET["id"])) {
-  $arrData = ["categories" => $categories, "user_name" => $user_name, "is_auth" => $is_auth];
   $lot = getLotById($_GET["id"], $linkDB, $arrData);
   $bets = getBetsForId($_GET["id"], $linkDB, $arrData);
 }
@@ -77,8 +77,10 @@ if ($is_auth && $_SERVER["REQUEST_METHOD"] === "POST" && $isVisibleForm) {
       if (!$result) {
         $errors["cost"] = "Не удалось добавить ставку! Попробуйте ещё раз";
       }
-  
-      $lot = getLotById($lot["id"], $linkDB, ["categories" => $categories, "user_name" => $user_name, "is_auth" => $is_auth]);
+
+    $lot = getLotById($_GET["id"], $linkDB, $arrData);
+    $bets = getBetsForId($_GET["id"], $linkDB, $arrData);
+    $isVisibleForm = !$isVisibleForm;
   }
 }
 
