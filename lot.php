@@ -5,33 +5,36 @@ $errors = [];
 $arrData = ["categories" => $categories, "user_name" => $user_name, "is_auth" => $is_auth];
 $isVisibleForm = true;
 
-if (isset($_GET["id"])) {
-  $lot = getLotById($_GET["id"], $linkDB, $arrData);
+if (isset($_GET["id"]) && $lot = getLotById($_GET["id"], $linkDB, $arrData)) {
   $bets = getBetsForId($_GET["id"], $linkDB, $arrData);
-}
+  $checkRulesBase = ["whose-lot", "whose-last-bet", "date-completion-bet"];
 
-$checkRulesBase = ["whose-lot", "whose-last-bet", "date-completion-bet"];
+  $rulesBase = [
+    "whose-lot" => function () use ($userID, $lot) {
+      return checkWhoseLot($userID, $lot["user_id"]);
+    },
+    "whose-last-bet" => function () use ($userID, $lot) {
+      return checkWhoseLastBet($userID, $lot["last_bet_user_id"]);
+    },
+    "date-completion-bet" => function () use ($lot, $today) {
+      return checkDateCompletionBet($lot["date_completion"], $today);
+    },
+  ];
 
-$rulesBase = [
-  "whose-lot" => function () use ($userID, $lot) {
-    return validateWhoseLot($userID, $lot["user_id"]);
-  },
-  "whose-last-bet" => function () use ($userID, $lot) {
-    return validateWhoseLastBet($userID, $lot["last_bet_user_id"]);
-  },
-  "date-completion-bet" => function () use ($lot, $today) {
-    return validateDateCompletionBet($lot["date_completion"], $today);
-  },
-];
-
-foreach ($checkRulesBase as $key) {
-  if (isset($rulesBase[$key])) {
-    $ruleBase = $rulesBase[$key];
-    $errors[$key] = $ruleBase();
+  foreach ($checkRulesBase as $key) {
+    if (isset($rulesBase[$key])) {
+      $ruleBase = $rulesBase[$key];
+      $errors[$key] = $ruleBase();
+    }
   }
-}
 
-$errors = array_filter($errors);
+  $errors = array_filter($errors);
+} else {
+  $title = "Ошибка 404 - YetiCave";
+  $content = include_template(
+    '404.php'
+  );
+}
 
 if (!$is_auth || isset($errors["whose-lot"]) || isset($errors["whose-last-bet"]) || isset($errors["date-completion-bet"])) {
   $isVisibleForm = !$isVisibleForm;
@@ -46,7 +49,7 @@ if ($is_auth && $_SERVER["REQUEST_METHOD"] === "POST" && $isVisibleForm) {
 
   $rules = [
     "cost" => function () use ($lot, $bet) {
-      return validateMinBet($lot["price"], $lot["step"], $bet["cost"]);
+      return checkMinBet($lot["price"], $lot["step"], $bet["cost"]);
     }
   ];
 
@@ -102,9 +105,9 @@ if (isset($lot["id"])) {
 $layout = include_template(
   'layout.php',
   [
-    "title" => $title ?? "Ошибка 404 - YetiCave",
+    "title" => $title,
     "categories" => $categories,
-    "content" => $content ?? include_template('404.php'),
+    "content" => $content,
     "user_name" => $user_name,
     "is_auth" => $is_auth
   ]

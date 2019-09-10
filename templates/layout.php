@@ -18,8 +18,8 @@
         <a class="main-header__logo">
           <img src="../img/logo.svg" width="160" height="39" alt="Логотип компании YetiCave">
         </a>
-        <form class="main-header__search" method="get" action="https://echo.htmlacademy.ru" autocomplete="off">
-          <input type="search" name="search" placeholder="Поиск лота">
+        <form class="main-header__search" method="get" action="/search.php" autocomplete="off">
+          <input type="search" name="search" placeholder="Поиск лота" value='<?= isset($_GET["search"]) ? clearStrDataTags($_GET["search"]) : "" ?>'>
           <input class="main-header__search-btn" type="submit" name="find" value="Найти">
         </form>
         <?php if ($is_auth == 1) : ?>

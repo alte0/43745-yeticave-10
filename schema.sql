@@ -40,7 +40,8 @@ CREATE TABLE `lots` (
     INDEX(`description`),
     FOREIGN KEY (user_id) REFERENCES users (id),
     FOREIGN KEY (user_id_winner) REFERENCES users (id),
-    FOREIGN KEY (category_id) REFERENCES сategories (id)
+    FOREIGN KEY (category_id) REFERENCES сategories (id),
+    FULLTEXT (name,description)
   ) 
   ENGINE = InnoDB 
   COMMENT = 'Таблица лотов';
