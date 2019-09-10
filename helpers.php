@@ -452,12 +452,12 @@ function getAgoText($today, $timeBet){
     return date('d.m.y в H:i', strtotime($timeBet));
 }
 /**
- * Валидация, проверяем чей лот
+ * Проверяем чей лот
  * @param integer $userID - id залогиного пользователя;
  * @param integer $lotUserId - id пользователя создавшего лот;
  * @param boolean $isMyLot - признак на принадлежность лота $userID === $lotUserId;
  */
-function validateWhoseLot($userID, $lotUserId) {
+function checkWhoseLot($userID, $lotUserId) {
     if ((int)$userID === (int)$lotUserId) {
         return "Вы не можите сделать ставку на свой лот";
     }
@@ -465,12 +465,12 @@ function validateWhoseLot($userID, $lotUserId) {
     return null;
 }
 /**
- * Валидация, проверяем чья последняя ставка на лот
+ * Проверяем чья последняя ставка на лот
  * @param integer $userID - id залогиного пользователя;
  * @param integer $lotUserId - id пользователя создавшего лот;
  * @param boolean $isMyLastBet - признак на принадлежность последней ставки $userID === $lotUserId;
  */
-function validateWhoseLastBet($userID, $last_bet_user_id) {
+function checkWhoseLastBet($userID, $last_bet_user_id) {
     if ((int)$userID === (int)$last_bet_user_id) {
         return "Вы уже сделали ставку";
     }
@@ -478,12 +478,12 @@ function validateWhoseLastBet($userID, $last_bet_user_id) {
     return null;
 }
 /**
- * Валидация, проверяем закончилось ли время на лот
+ * Проверяем закончилось ли время на лот
  * @param integer $userID - id залогиного пользователя;
  * @param integer $lotUserId - id пользователя создавшего лот;
  * @param boolean $isMyLot - признак на принадлежность лота $userID === $lotUserId;
  */
-function validateDateCompletionBet($dateСompletion, $today) {
+function checkDateCompletionBet($dateСompletion, $today) {
 
     if (!(strtotime($dateСompletion) >= strtotime($today))) {
         return "Торг на этот лот завершен";
@@ -492,12 +492,12 @@ function validateDateCompletionBet($dateСompletion, $today) {
     return null;
 }
 /**
- * Валидация, проверяем чья последняя ставка на лот
+ * Проверяем чья последняя ставка на лот
  * @param integer $price - цена лота;
  * @param integer $step - шаг ставки на лот;
  * @param integer $cost - ставка пользователя на лот;
  */
-function validateMinBet($price, $step, $cost) {
+function checkMinBet($price, $step, $cost) {
     $minBet = $price + $step;
     
     if (!($cost >= $minBet)) {
