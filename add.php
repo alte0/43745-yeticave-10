@@ -60,7 +60,7 @@ if ($_SERVER['REQUEST_METHOD'] === "POST") {
   }
 
   foreach ($lot as $key => $value) {
-    if (isset($rules[$key]) && !isset($errors[$key])) {
+    if (!isset($errors[$key]) && isset($rules[$key])) {
       $rule = $rules[$key];
       $errors[$key] = $rule();
     }

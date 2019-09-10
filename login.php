@@ -39,7 +39,7 @@ if ($_SERVER['REQUEST_METHOD'] === "POST") {
   }
 
   foreach ($user as $key => $value) {
-    if (isset($rules[$key]) && !isset($errors[$key])) {
+    if (!isset($errors[$key]) && isset($rules[$key])) {
       $rule = $rules[$key];
       $errors[$key] = $rule();
     }
@@ -54,8 +54,8 @@ if ($_SERVER['REQUEST_METHOD'] === "POST") {
     mysqli_stmt_execute($stmt);
     $resultUser = mysqli_stmt_get_result($stmt);
     $arr = mysqli_fetch_array($resultUser, MYSQLI_ASSOC);
-
-    if ($arr["email"] === $email && password_verify($saltPwd . $user["password"] . $saltPwd, $arr["password"])) {
+    
+    if (isset($arr) && password_verify($saltPwd . $user["password"] . $saltPwd, $arr["password"])) {
         $_SESSION["userInfo"] = [
           "id" => $arr["id"],
           "name" => $arr["name"],

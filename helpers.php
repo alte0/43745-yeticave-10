@@ -257,7 +257,7 @@ function validateLength(string $value, int $min, int $max) {
 /**
  * Валидация id категории из масива
  * @param string $value - значение для валидации;
- * @param array $link - соединение с БД;
+ * @param resource $link - соединение с БД;
  */
 function validateCategory($value, $link) {
     if (mysqli_connect_errno()) {
@@ -331,7 +331,7 @@ function addCommaAndSpaceText($str) {
 /**
  * Валидация email на регистрацию.
  * @param string $value - значение для валидации;
- * @param $link - соединение с БД;
+ * @param resource $link - соединение с БД;
  */
 function validateEmailSignUp($email, $link)
 {
@@ -363,6 +363,145 @@ function validateEmailSignIn($email)
 {
     if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
         return "Вы ввели - не email";
+    }
+
+    return null;
+}
+/**
+ * Получение лота по его id
+ * @param string $getId - передоваемый id;
+ * @param resource $linkDB - соединение с бд;
+ * @param array $otherData - дополнительные данные в массиве;
+ */
+function getLotById($getId, $linkDB, array $otherData = []) {
+    extract($otherData);
+    $getId = intval($getId) < 0 ? 0 : intval($getId);
+    $sqlLot = "SELECT l.id, l.date_completion, l.name, l.start_price, l.image, l.category_id, l.step, l.description, l.user_id, c.name AS category_name, b.user_id AS last_bet_user_id, IFNULL(max(b.price), l.start_price) AS price FROM lots l INNER JOIN сategories c ON l.category_id = c.id LEFT JOIN bets b ON l.id = b.lot_id WHERE l.id = $getId GROUP BY b.user_id";
+    $resultLot = mysqli_query($linkDB, $sqlLot);
+
+    if (!$resultLot) {
+        $error = "Произошла ошибка в базе данных - " . mysqli_error($linkDB);
+
+        showErrorTemplateAndDie([
+        "error" => $error,
+        "categories" => $categories,
+        "user_name" => $user_name,
+        "is_auth" => $is_auth
+        ]);
+    }
+
+    return mysqli_fetch_array($resultLot, MYSQLI_ASSOC);
+}
+/**
+ * Получение ставок на лот по его id
+ * @param string $getId - передоваемый id;
+ * @param resource $linkDB - соединение с бд;
+ * @param array $otherData - дополнительные данные в массиве;
+ */
+function getBetsForId($getId, $linkDB, array $otherData = []) {
+    extract($otherData);
+    $getId = intval($getId) < 0 ? 0 : intval($getId);
+    $sqlBets = "SELECT b.date_create AS date, b.price, u.name FROM bets b INNER JOIN users u ON u.id = b.user_id WHERE lot_id = $getId ORDER BY date_create DESC";
+    $resultLot = mysqli_query($linkDB, $sqlBets);
+
+    if (!$resultLot) {
+        $error = "Произошла ошибка в базе данных - " . mysqli_error($linkDB);
+
+        showErrorTemplateAndDie([
+        "error" => $error,
+        "categories" => $categories,
+        "user_name" => $user_name,
+        "is_auth" => $is_auth
+        ]);
+    }
+
+    return mysqli_fetch_all($resultLot, MYSQLI_ASSOC);
+}
+/**
+ * Получение времени в формате 5 минут назад, 20 минут назад, час назад, Вчера, в 21:30, 19.03.17 в 08:21
+ * @param string $time - время;
+ * @param string $today - сегодняшняя дата и время;
+ * @return string 
+ */
+function getAgoText($today, $timeBet){
+    $ago = "назад";
+    $yesterday = "Вчера, в ";
+
+    $datetime1 = date_create($timeBet);
+    $datetime2 = date_create($today);
+    $interval = date_diff($datetime1, $datetime2);
+    // дней 
+    $countDay = (int)$interval->format('%a');
+    // часов
+    $hours = (int)$interval->format('%H');
+    // минут
+    $minutes = (int)$interval->format('%I');
+    
+    if($countDay >= 1 && $countDay < 2) {
+        return $yesterday . date('H:i', strtotime($timeBet));
+    }
+
+    if($countDay === 0 && $hours >= 1) {
+        return ($hours === 1 ? "" : "$hours ") . get_noun_plural_form($hours, "Час", "Часа", "Часов") . " $ago";
+    }
+
+    if($countDay === 0 && $hours === 0 ) {
+        return "$minutes " . get_noun_plural_form($minutes, "минута", "минуты", "минут") . " $ago";
+    }
+
+    return date('d.m.y в H:i', strtotime($timeBet));
+}
+/**
+ * Валидация, проверяем чей лот
+ * @param integer $userID - id залогиного пользователя;
+ * @param integer $lotUserId - id пользователя создавшего лот;
+ * @param boolean $isMyLot - признак на принадлежность лота $userID === $lotUserId;
+ */
+function validateWhoseLot($userID, $lotUserId) {
+    if ((int)$userID === (int)$lotUserId) {
+        return "Вы не можите сделать ставку на свой лот";
+    }
+
+    return null;
+}
+/**
+ * Валидация, проверяем чья последняя ставка на лот
+ * @param integer $userID - id залогиного пользователя;
+ * @param integer $lotUserId - id пользователя создавшего лот;
+ * @param boolean $isMyLastBet - признак на принадлежность последней ставки $userID === $lotUserId;
+ */
+function validateWhoseLastBet($userID, $last_bet_user_id) {
+    if ((int)$userID === (int)$last_bet_user_id) {
+        return "Вы уже сделали ставку";
+    }
+
+    return null;
+}
+/**
+ * Валидация, проверяем закончилось ли время на лот
+ * @param integer $userID - id залогиного пользователя;
+ * @param integer $lotUserId - id пользователя создавшего лот;
+ * @param boolean $isMyLot - признак на принадлежность лота $userID === $lotUserId;
+ */
+function validateDateCompletionBet($dateСompletion, $today) {
+
+    if (!(strtotime($dateСompletion) >= strtotime($today))) {
+        return "Торг на этот лот завершен";
+    }
+
+    return null;
+}
+/**
+ * Валидация, проверяем чья последняя ставка на лот
+ * @param integer $price - цена лота;
+ * @param integer $step - шаг ставки на лот;
+ * @param integer $cost - ставка пользователя на лот;
+ */
+function validateMinBet($price, $step, $cost) {
+    $minBet = $price + $step;
+    
+    if (!($cost >= $minBet)) {
+        return "Ваша ставка меньше минимальной ставки!";
     }
 
     return null;
