@@ -6,7 +6,7 @@ $categoriesNav = include_template(
     [
     "categories" => $categories,
     "categoriesIdCurrent" => $categoriesIdCurrent
-  ]
+    ]
 );
 
 if ($isAuth) {
@@ -20,7 +20,7 @@ if ($isAuth) {
     "user_name" => $user_name,
     "isAuth" => $isAuth,
     "categoriesIdCurrent" => $categoriesIdCurrent
-  ]);
+    ]);
 }
 
 $errors = [];
@@ -31,7 +31,7 @@ if ($_SERVER['REQUEST_METHOD'] === "POST") {
     "password" => !empty($_POST["password"]) ? trim($_POST["password"]) : '',
     "name" => !empty($_POST["name"]) ? trim($_POST["name"]) : '',
     "message" => !empty($_POST["message"]) ? trim($_POST["message"]) : ''
-  ];
+    ];
 
     $required = ["email", "password", "name", "message"];
 
@@ -89,7 +89,7 @@ if ($_SERVER['REQUEST_METHOD'] === "POST") {
       "categories" => $categories,
       "categoriesNav" => $categoriesNav,
       "errors" => $errors
-    ]
+      ]
   );
 } else {
     $content = include_template(
@@ -97,7 +97,7 @@ if ($_SERVER['REQUEST_METHOD'] === "POST") {
       [
       "categories" => $categories,
       "categoriesNav" => $categoriesNav
-    ]
+      ]
   );
 }
 

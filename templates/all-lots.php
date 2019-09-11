@@ -40,19 +40,19 @@
           $pageNext = ($cur_page + 1) > $lastPage ? $lastPage : ($cur_page + 1);
           ?>
         <li class="pagination-item pagination-item-prev">
-          <?php if ($pagePrev == $cur_page) : ?>
+          <?php if ($pagePrev ===  $cur_page) : ?>
             <a>Назад</a>
           <?php else : ?>
             <a href="/all-lots.php?id=<?= $searchCategory ?>&page=<?= $pagePrev; ?>">Назад</a>
           <?php endif; ?>
         </li>
         <?php foreach ($pages as $page) : ?>
-          <li class="pagination-item <?php if ($page == $cur_page) : ?>pagination-item-active<?php endif; ?>">
+          <li class="pagination-item <?php if ((int) $page === $cur_page) : ?>pagination-item-active<?php endif; ?>">
             <a href="/all-lots.php?id=<?= $searchCategory ?>&page=<?= $page; ?>"><?= $page; ?></a>
           </li>
         <?php endforeach; ?>
         <li class="pagination-item pagination-item-next">
-          <?php if ($pageNext == $cur_page) : ?>
+          <?php if ((int) $pageNext ===  $cur_page) : ?>
             <a>Вперед</a>
           <?php else : ?>
             <a href="/all-lots.php?id=<?= $searchCategory ?>&page=<?= $pageNext; ?>">Вперед</a>

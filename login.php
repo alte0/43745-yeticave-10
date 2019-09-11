@@ -103,7 +103,7 @@ $layout = include_template(
     "user_name" => $user_name,
     "isAuth" => $isAuth,
     "categoriesNav" => $categoriesNav
-  ]
+    ]
 );
 
 print($layout);

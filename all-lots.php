@@ -9,7 +9,8 @@ $arrData = [
 if (isset($_GET["id"]) && is_numeric($_GET["id"]) && $categoryName = getCategoryName($_GET["id"], $linkDB, $arrData)) {
     $searchCategory = intval(trim($_GET["id"]));
     $categoriesIdCurrent = $searchCategory;
-    $cur_page = $_GET['page'] ?? 1;
+    $cur_page = isset($_GET['page']) ? intval($_GET['page']) : 1;
+
 
     $sqlSearchCount = "SELECT COUNT(*) as count FROM (SELECT lots.*, c.name AS category FROM lots INNER JOIN сategories c ON lots.category_id = c.id LEFT JOIN bets b ON lots.id = b.lot_id WHERE lots.date_completion >= ? AND lots.category_id = ?) AS t";
 
@@ -20,13 +21,13 @@ if (isset($_GET["id"]) && is_numeric($_GET["id"]) && $categoryName = getCategory
     if (!$resultSearchCount) {
         $error = mysqli_error($linkDB);
         showErrorTemplateAndDie([
-      "error" => $error,
-      "categories" => $categories,
-      "content" => $content,
-      "user_name" => $user_name,
-      "isAuth" => $isAuth,
-      "categoriesIdCurrent" => $categoriesIdCurrent
-    ]);
+        "error" => $error,
+        "categories" => $categories,
+        "content" => $content,
+        "user_name" => $user_name,
+        "isAuth" => $isAuth,
+        "categoriesIdCurrent" => $categoriesIdCurrent
+        ]);
     }
 
     $items_count = mysqli_fetch_array($resultSearchCount)["count"];
@@ -45,13 +46,13 @@ if (isset($_GET["id"]) && is_numeric($_GET["id"]) && $categoryName = getCategory
     if (!$result) {
         $error = mysqli_error($linkDB);
         showErrorTemplateAndDie([
-      "error" => $error,
-      "categories" => $categories,
-      "content" => $content,
-      "user_name" => $user_name,
-      "isAuth" => $isAuth,
-      "categoriesIdCurrent" => $categoriesIdCurrent
-    ]);
+        "error" => $error,
+        "categories" => $categories,
+        "content" => $content,
+        "user_name" => $user_name,
+        "isAuth" => $isAuth,
+        "categoriesIdCurrent" => $categoriesIdCurrent
+        ]);
     }
 
     $lots = mysqli_fetch_all($result, MYSQLI_ASSOC);
@@ -63,7 +64,7 @@ if (isset($_GET["id"]) && is_numeric($_GET["id"]) && $categoryName = getCategory
     "user_name" => $user_name,
     "isAuth" => $isAuth,
     "categoriesIdCurrent" => $categoriesIdCurrent
-  ]);
+    ]);
 }
 
 $categoriesNav = include_template(
@@ -71,7 +72,7 @@ $categoriesNav = include_template(
     [
     "categories" => $categories,
     "categoriesIdCurrent" => $categoriesIdCurrent
-  ]
+    ]
 );
 
 $content = include_template(
@@ -86,7 +87,7 @@ $content = include_template(
     'page_items' => $page_items,
     "categoriesNav" => $categoriesNav,
     "categoryName" => $categoryName
-  ]
+    ]
 );
 
 $layout = include_template(
@@ -98,7 +99,7 @@ $layout = include_template(
     "user_name" => $user_name,
     "isAuth" => $isAuth,
     "categoriesNav" => $categoriesNav
-  ]
+    ]
 );
 
 print($layout);

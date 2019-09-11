@@ -80,15 +80,15 @@ if ($_SERVER['REQUEST_METHOD'] === "POST") {
 
         $sqlLot = "INSERT INTO lots (name, description, start_price, image, step, date_completion, user_id, category_id) VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
         $stmt = db_get_prepare_stmt($linkDB, $sqlLot, [
-      $lot["lot-name"],
-      $lot["message"],
-      $lot["lot-rate"],
-      $lot["path"],
-      $lot["lot-step"],
-      $lot["lot-date"],
-      $userID,
-      $lot["category"]
-    ]);
+        $lot["lot-name"],
+        $lot["message"],
+        $lot["lot-rate"],
+        $lot["path"],
+        $lot["lot-step"],
+        $lot["lot-date"],
+        $userID,
+        $lot["category"]
+        ]);
         $result = mysqli_stmt_execute($stmt);
 
         if ($result) {
