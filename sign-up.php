@@ -69,11 +69,11 @@ if ($_SERVER['REQUEST_METHOD'] === "POST") {
         if ($hashPwd = password_hash($saltPwd . $user["password"] . $saltPwd, PASSWORD_DEFAULT)) {
             $sqlUser = "INSERT INTO users (email, name, password, contacts) VALUES (?, ?, ?, ?)";
             $stmt = db_get_prepare_stmt($linkDB, $sqlUser, [
-        $user["email"],
-        $user["name"],
-        $hashPwd,
-        $user["message"]
-      ]);
+            $user["email"],
+            $user["name"],
+            $hashPwd,
+            $user["message"]
+          ]);
             $result = mysqli_stmt_execute($stmt);
 
             if ($result) {

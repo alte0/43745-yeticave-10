@@ -3,8 +3,8 @@ require "init.php";
 
 $errors = [];
 $arrData = [
-  "categories" => $categories, "user_name" => $user_name, "isAuth" => $isAuth,
-  "categoriesIdCurrent" => $categoriesIdCurrent
+"categories" => $categories, "user_name" => $user_name, "isAuth" => $isAuth,
+"categoriesIdCurrent" => $categoriesIdCurrent
 ];
 $isVisibleForm = true;
 
@@ -35,8 +35,8 @@ if (isset($_GET["id"]) && $lot = getLotById($_GET["id"], $linkDB, $arrData)) {
 } else {
     $title = "Ошибка 404 - YetiCave";
     $content = include_template(
-      '404.php'
-  );
+        '404.php'
+    );
 }
 
 if (!$isAuth || isset($errors["whose-lot"]) || isset($errors["whose-last-bet"]) || isset($errors["date-completion-bet"])) {
@@ -74,10 +74,10 @@ if ($isAuth && $_SERVER["REQUEST_METHOD"] === "POST" && $isVisibleForm) {
     if (!count($errors)) {
         $sqlBet = "INSERT INTO bets (price, user_id, lot_id) VALUES (?, ?, ?)";
         $stmt = db_get_prepare_stmt($linkDB, $sqlBet, [
-      $bet["cost"],
-      $userID,
-      $lot["id"]
-    ]);
+        $bet["cost"],
+        $userID,
+        $lot["id"]
+        ]);
         $result = mysqli_stmt_execute($stmt);
 
         if (!$result) {
@@ -93,16 +93,16 @@ if ($isAuth && $_SERVER["REQUEST_METHOD"] === "POST" && $isVisibleForm) {
 if (isset($lot["id"])) {
     $title = "Лот " . $lot["name"] . " - YetiCave";
     $content = include_template(
-      'lot.php',
-      [
-      "lot" => $lot,
-      "bets" => $bets,
-      "isAuth" => $isAuth,
-      "isVisibleForm" => $isVisibleForm,
-      "today" => $today,
-      "errors" => $errors
-    ]
-  );
+        'lot.php',
+        [
+        "lot" => $lot,
+        "bets" => $bets,
+        "isAuth" => $isAuth,
+        "isVisibleForm" => $isVisibleForm,
+        "today" => $today,
+        "errors" => $errors
+        ]
+    );
 }
 
 $categoriesNav = include_template(
@@ -110,7 +110,7 @@ $categoriesNav = include_template(
     [
     "categories" => $categories,
     "categoriesIdCurrent" => $categoriesIdCurrent
-  ]
+    ]
 );
 
 $layout = include_template(
@@ -122,7 +122,7 @@ $layout = include_template(
     "user_name" => $user_name,
     "isAuth" => $isAuth,
     "categoriesNav" => $categoriesNav
-  ]
+    ]
 );
 
 print($layout);

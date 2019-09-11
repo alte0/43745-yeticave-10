@@ -6,7 +6,7 @@ $categoriesNav = include_template(
     [
     "categories" => $categories,
     "categoriesIdCurrent" => $categoriesIdCurrent
-  ]
+    ]
 );
 
 if ($isAuth) {
@@ -19,7 +19,7 @@ if ($isAuth) {
     "user_name" => $user_name,
     "isAuth" => $isAuth,
     "categoriesIdCurrent" => $categoriesIdCurrent
-  ]);
+    ]);
 }
 
 $errors = [];
@@ -28,7 +28,7 @@ if ($_SERVER['REQUEST_METHOD'] === "POST") {
     $user = [
     "email" => !empty($_POST["email"]) ? trim($_POST["email"]) : '',
     "password" => !empty($_POST["password"]) ? trim($_POST["password"]) : ''
-  ];
+    ];
 
     $required = ["email", "password"];
 
@@ -66,9 +66,9 @@ if ($_SERVER['REQUEST_METHOD'] === "POST") {
 
         if (isset($arr) && password_verify($saltPwd . $user["password"] . $saltPwd, $arr["password"])) {
             $_SESSION["userInfo"] = [
-        "id" => $arr["id"],
-        "name" => $arr["name"],
-      ];
+            "id" => $arr["id"],
+            "name" => $arr["name"],
+            ];
             header("Location: /");
             die;
         } else {
@@ -79,18 +79,18 @@ if ($_SERVER['REQUEST_METHOD'] === "POST") {
     $content = include_template(
         'login.php',
         [
-      "categories" => $categories,
-      "categoriesNav" => $categoriesNav,
-      "errors" => $errors
-    ]
+        "categories" => $categories,
+        "categoriesNav" => $categoriesNav,
+        "errors" => $errors
+        ]
     );
 } else {
     $content = include_template(
         'login.php',
         [
-      "categories" => $categories,
-      "categoriesNav" => $categoriesNav
-    ]
+        "categories" => $categories,
+        "categoriesNav" => $categoriesNav
+        ]
     );
 }
 

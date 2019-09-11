@@ -225,20 +225,20 @@ function showErrorTemplateAndDie(array $data)
     $categoriesNav = include_template(
         'categories-nav.php',
         [
-            "categories" => $categories,
-            "categoriesIdCurrent" => $categoriesIdCurrent
+        "categories" => $categories,
+        "categoriesIdCurrent" => $categoriesIdCurrent
         ]
     );
     $content = include_template('error.php', ['error' => $error]);
     $layout = include_template(
         'layout.php',
         [
-            "title" => "Ошибка - YetiCave",
-            "categories" => $categories,
-            "content" => $content,
-            "user_name" => $user_name,
-            "isAuth" => $isAuth,
-            "categoriesNav" => $categoriesNav
+        "title" => "Ошибка - YetiCave",
+        "categories" => $categories,
+        "content" => $content,
+        "user_name" => $user_name,
+        "isAuth" => $isAuth,
+        "categoriesNav" => $categoriesNav
         ]
     );
     print($layout);
@@ -405,10 +405,11 @@ function getLotById($getId, $linkDB, array $otherData = [])
         $error = "Произошла ошибка в базе данных - " . mysqli_error($linkDB);
 
         showErrorTemplateAndDie([
-            "error" => $error,
-            "categories" => $categories,
-            "user_name" => $user_name,
-            "isAuth" => $isAuth
+        "error" => $error,
+        "categories" => $categories,
+        "user_name" => $user_name,
+        "isAuth" => $isAuth,
+        "categoriesIdCurrent" => $categoriesIdCurrent
         ]);
     }
 
@@ -432,12 +433,12 @@ function getBetsForId($getId, $linkDB, array $otherData = [])
     if (!$result) {
         $error = mysqli_error($linkDB);
         showErrorTemplateAndDie([
-            "error" => $error,
-            "categories" => $categories,
-            "content" => $content,
-            "user_name" => $user_name,
-            "isAuth" => $isAuth,
-            "categoriesIdCurrent" => $categoriesIdCurrent
+        "error" => $error,
+        "categories" => $categories,
+        "content" => $content,
+        "user_name" => $user_name,
+        "isAuth" => $isAuth,
+        "categoriesIdCurrent" => $categoriesIdCurrent
         ]);
     }
 
@@ -554,12 +555,12 @@ function getCategoryName($id, $linkDB, array $otherData = [])
     if (!$resultCategoriesName) {
         $error = mysqli_error($linkDB);
         showErrorTemplateAndDie([
-            "error" => $error,
-            "categories" => $categories,
-            "content" => $content,
-            "user_name" => $user_name,
-            "isAuth" => $isAuth,
-            "categoriesIdCurrent" => $categoriesIdCurrent
+        "error" => $error,
+        "categories" => $categories,
+        "content" => $content,
+        "user_name" => $user_name,
+        "isAuth" => $isAuth,
+        "categoriesIdCurrent" => $categoriesIdCurrent
         ]);
     }
 
@@ -584,12 +585,12 @@ function getLotsWithoutWinners($today, $linkDB, array $otherData = [])
     if (!$result) {
         $error = mysqli_error($linkDB);
         showErrorTemplateAndDie([
-            "error" => $error,
-            "categories" => $categories,
-            "content" => $content,
-            "user_name" => $user_name,
-            "isAuth" => $isAuth,
-            "categoriesIdCurrent" => $categoriesIdCurrent
+        "error" => $error,
+        "categories" => $categories,
+        "content" => $content,
+        "user_name" => $user_name,
+        "isAuth" => $isAuth,
+        "categoriesIdCurrent" => $categoriesIdCurrent
         ]);
     }
 
@@ -611,12 +612,12 @@ function setWinner($lotId, $winnerId, $linkDB, array $otherData = [])
     if (!$result) {
         $error = mysqli_error($linkDB);
         showErrorTemplateAndDie([
-            "error" => $error,
-            "categories" => $categories,
-            "content" => $content,
-            "user_name" => $user_name,
-            "isAuth" => $isAuth,
-            "categoriesIdCurrent" => $categoriesIdCurrent
+        "error" => $error,
+        "categories" => $categories,
+        "content" => $content,
+        "user_name" => $user_name,
+        "isAuth" => $isAuth,
+        "categoriesIdCurrent" => $categoriesIdCurrent
         ]);
     }
 }
