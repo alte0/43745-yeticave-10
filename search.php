@@ -14,13 +14,13 @@ if (isset($_GET["search"]) && !empty($_GET["search"])) {
     if (!$resultSearchCount) {
         $error = mysqli_error($linkDB);
         showErrorTemplateAndDie([
-      "error" => $error,
-      "categories" => $categories,
-      "content" => $content,
-      "user_name" => $user_name,
-      "isAuth" => $isAuth,
-      "categoriesIdCurrent" => $categoriesIdCurrent
-    ]);
+        "error" => $error,
+        "categories" => $categories,
+        "content" => $content,
+        "user_name" => $user_name,
+        "isAuth" => $isAuth,
+        "categoriesIdCurrent" => $categoriesIdCurrent
+        ]);
     }
 
     $items_count = mysqli_fetch_array($resultSearchCount)["count"];
@@ -39,13 +39,13 @@ if (isset($_GET["search"]) && !empty($_GET["search"])) {
     if (!$result) {
         $error = mysqli_error($linkDB);
         showErrorTemplateAndDie([
-      "error" => $error,
-      "categories" => $categories,
-      "content" => $content,
-      "user_name" => $user_name,
-      "isAuth" => $isAuth,
-      "categoriesIdCurrent" => $categoriesIdCurrent
-    ]);
+        "error" => $error,
+        "categories" => $categories,
+        "content" => $content,
+        "user_name" => $user_name,
+        "isAuth" => $isAuth,
+        "categoriesIdCurrent" => $categoriesIdCurrent
+        ]);
     }
 
     $lots = mysqli_fetch_all($result, MYSQLI_ASSOC);
@@ -57,7 +57,7 @@ if (isset($_GET["search"]) && !empty($_GET["search"])) {
     "user_name" => $user_name,
     "isAuth" => $isAuth,
     "categoriesIdCurrent" => $categoriesIdCurrent
-  ]);
+    ]);
 }
 
 $categoriesNav = include_template(
@@ -65,7 +65,7 @@ $categoriesNav = include_template(
     [
     "categories" => $categories,
     "categoriesIdCurrent" => $categoriesIdCurrent,
-  ]
+    ]
 );
 
 $content = include_template(
@@ -79,7 +79,7 @@ $content = include_template(
     'cur_page' => $cur_page,
     'page_items' => $page_items,
     "categoriesNav" => $categoriesNav
-  ]
+    ]
 );
 
 $layout = include_template(
@@ -91,7 +91,7 @@ $layout = include_template(
     "user_name" => $user_name,
     "isAuth" => $isAuth,
     "categoriesNav" => $categoriesNav
-  ]
+    ]
 );
 
 print($layout);
