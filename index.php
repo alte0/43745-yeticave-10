@@ -1,5 +1,6 @@
 <?php
 require "init.php";
+require "getwinner.php";
 
 $content = '';
 
@@ -14,7 +15,8 @@ if (!$resultAnnouncements) {
         "categories" => $categories,
         "content" => $content,
         "user_name" => $user_name,
-        "is_auth" => $is_auth
+        "isAuth" => $isAuth,
+        "categoriesIdCurrent" => $categoriesIdCurrent
     ]);
 }
 
@@ -24,7 +26,15 @@ $content = include_template(
     'main.php',
     [
         "categories" => $categories,
-        "announcements" => $announcements,
+        "announcements" => $announcements
+    ]
+);
+
+$categoriesNav = include_template(
+    'categories-nav.php',
+    [
+        "categories" => $categories,
+        "categoriesIdCurrent" => $categoriesIdCurrent
     ]
 );
 
@@ -35,7 +45,8 @@ $layout = include_template(
         "categories" => $categories,
         "content" => $content,
         "user_name" => $user_name,
-        "is_auth" => $is_auth
+        "isAuth" => $isAuth,
+        "categoriesNav" => $categoriesNav
     ]
 );
 

@@ -2,10 +2,9 @@
   <?= $categoriesNav ?>
   <div class="container">
     <section class="lots">
-      <?php if (!count($lots)) : ?>
-        <h2>Ничего не найдено по вашему запросу</h2>
-      <?php else : ?>
-        <h2>Результаты поиска по запросу «<span><?= clearStrDataTags($searchText) ?></span>»</h2>
+      </ul>
+      <?php if (count($lots)) : ?>
+        <h2>Все лоты в категории «<span><?= $categoryName ?></span>»</h2>
         <ul class="lots__list">
           <?php foreach ($lots as $item) : ?>
             <li class="lots__item lot">
@@ -29,6 +28,8 @@
             </li>
           <?php endforeach; ?>
         </ul>
+      <?php else : ?>
+      <h2>В категории «<span><?= $categoryName ?></span>» нет лотов</h2>
       <?php endif; ?>
     </section>
     <?php if ((int) $pages_count >= $page_items && count($lots)) : ?>
@@ -42,19 +43,19 @@
           <?php if ($pagePrev == $cur_page) : ?>
             <a>Назад</a>
           <?php else : ?>
-            <a href="/search.php?search=<?= clearStrDataTags($searchText) ?>&find=Найти&page=<?= $pagePrev; ?>">Назад</a>
+            <a href="/all-lots.php?id=<?= $searchCategory ?>&page=<?= $pagePrev; ?>">Назад</a>
           <?php endif; ?>
         </li>
         <?php foreach ($pages as $page) : ?>
           <li class="pagination-item <?php if ($page == $cur_page) : ?>pagination-item-active<?php endif; ?>">
-            <a href="/search.php?search=<?= clearStrDataTags($searchText) ?>&find=Найти&page=<?= $page; ?>"><?= $page; ?></a>
+            <a href="/all-lots.php?id=<?= $searchCategory ?>&page=<?= $page; ?>"><?= $page; ?></a>
           </li>
         <?php endforeach; ?>
         <li class="pagination-item pagination-item-next">
           <?php if ($pageNext == $cur_page) : ?>
             <a>Вперед</a>
           <?php else : ?>
-            <a href="/search.php?search=<?= clearStrDataTags($searchText) ?>&find=Найти&page=<?= $pageNext; ?>">Вперед</a>
+            <a href="/all-lots.php?id=<?= $searchCategory ?>&page=<?= $pageNext; ?>">Вперед</a>
           <?php endif; ?>
         </li>
       </ul>
