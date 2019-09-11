@@ -72,7 +72,7 @@ if ($_SERVER['REQUEST_METHOD'] === "POST") {
             header("Location: /");
             die;
         } else {
-            $errors["common"] = "Введённый email или пароль - невереный!";
+            $errors["common"] = "Вы ввели неверный email/пароль";
         }
     }
 

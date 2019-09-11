@@ -15,7 +15,7 @@
             <div class="rates__img">
               <img src="../<?= $item["image"] ?>" width="54" height="40" alt="Сноуборд">
             </div>
-            <?php if (!empty($item["contacts"])) : ?>
+            <?php if (!empty($item["contacts"]) && $isWinner) : ?>
               <div>
                 <h3 class="rates__title"><a href="/lot.php?id=<?= $item["id"] ?>"><?= clearStrDataTags($item["name"]) ?></a></h3>
                 <p><?= clearStrDataTags($item["contacts"]) ?></p>
