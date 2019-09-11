@@ -1,13 +1,19 @@
 <?php
 require "init.php";
 
-if (isset($_GET["search"]) && !empty($_GET["search"])) {
-    $searchText = trim($_GET["search"]);
+$arrData = [
+  "categories" => $categories, "user_name" => $user_name, "isAuth" => $isAuth,
+  "categoriesIdCurrent" => $categoriesIdCurrent
+];
+
+if (isset($_GET["id"]) && is_numeric($_GET["id"]) && $categoryName = getCategoryName($_GET["id"], $linkDB, $arrData)) {
+    $searchCategory = intval(trim($_GET["id"]));
+    $categoriesIdCurrent = $searchCategory;
     $cur_page = $_GET['page'] ?? 1;
 
-    $sqlSearchCount = "SELECT COUNT(*) as count FROM (SELECT lots.*, c.name AS category FROM lots INNER JOIN сategories c ON lots.category_id = c.id LEFT JOIN bets b ON lots.id = b.lot_id WHERE lots.date_completion >= '$today' and MATCH(lots.name, lots.description) AGAINST(?) GROUP BY id ORDER BY date_create DESC) AS t";
+    $sqlSearchCount = "SELECT COUNT(*) as count FROM (SELECT lots.*, c.name AS category FROM lots INNER JOIN сategories c ON lots.category_id = c.id LEFT JOIN bets b ON lots.id = b.lot_id WHERE lots.date_completion >= ? AND lots.category_id = ?) AS t";
 
-    $stmtCount = db_get_prepare_stmt($linkDB, $sqlSearchCount, [$searchText]);
+    $stmtCount = db_get_prepare_stmt($linkDB, $sqlSearchCount, [$today, $searchCategory]);
     mysqli_stmt_execute($stmtCount);
     $resultSearchCount = mysqli_stmt_get_result($stmtCount);
 
@@ -30,9 +36,9 @@ if (isset($_GET["search"]) && !empty($_GET["search"])) {
 
     $pages = range(1, $pages_count);
 
-    $sqlSearch = "SELECT lots.*, c.name AS category FROM lots INNER JOIN сategories c ON lots.category_id = c.id LEFT JOIN bets b ON lots.id = b.lot_id WHERE lots.date_completion >= '$today' and MATCH(lots.name, lots.description) AGAINST(?) GROUP BY id ORDER BY date_create DESC LIMIT " . $page_items . ' OFFSET ' . $offset;
+    $sqlSearchCategoryId = "SELECT lots.*, c.name AS category FROM lots INNER JOIN сategories c ON lots.category_id = c.id LEFT JOIN bets b ON lots.id = b.lot_id WHERE lots.date_completion >= ? AND lots.category_id = ? ORDER BY lots.date_create DESC LIMIT " . $page_items . " OFFSET " . $offset;
 
-    $stmt = db_get_prepare_stmt($linkDB, $sqlSearch, [$searchText]);
+    $stmt = db_get_prepare_stmt($linkDB, $sqlSearchCategoryId, [$today, $searchCategory]);
     mysqli_stmt_execute($stmt);
     $result = mysqli_stmt_get_result($stmt);
 
@@ -50,7 +56,7 @@ if (isset($_GET["search"]) && !empty($_GET["search"])) {
 
     $lots = mysqli_fetch_all($result, MYSQLI_ASSOC);
 } else {
-    $error = "Не задан текст для поиска!";
+    $error = "Не найдена категория!";
     showErrorTemplateAndDie([
     "categories" => $categories,
     "error" => $error,
@@ -64,28 +70,29 @@ $categoriesNav = include_template(
     'categories-nav.php',
     [
     "categories" => $categories,
-    "categoriesIdCurrent" => $categoriesIdCurrent,
+    "categoriesIdCurrent" => $categoriesIdCurrent
   ]
 );
 
 $content = include_template(
-    'search.php',
+    'all-lots.php',
     [
     "categories" => $categories,
-    "searchText" => $searchText,
     "lots" => $lots,
+    "searchCategory" => $searchCategory,
     'pages' => $pages,
     'pages_count' => $pages_count,
     'cur_page' => $cur_page,
     'page_items' => $page_items,
-    "categoriesNav" => $categoriesNav
+    "categoriesNav" => $categoriesNav,
+    "categoryName" => $categoryName
   ]
 );
 
 $layout = include_template(
     'layout.php',
     [
-    "title" => "Результаты поиска - YetiCave",
+    "title" => "Все лоты категории $categoriesIdCurrent - YetiCave",
     "categories" => $categories,
     "content" => $content,
     "user_name" => $user_name,

@@ -1,0 +1,6 @@
+{
+    "name": "alte0/yeticave.loc",
+    "require": {
+        "swiftmailer/swiftmailer": "^6.2"
+    }
+}
