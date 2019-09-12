@@ -19,11 +19,11 @@ if (!$linkDB) {
     $error = "Ошибка: Невозможно подключиться к MySQL " . mysqli_connect_error();
 
     showErrorTemplateAndDie([
-    "error" => $error,
-    "categories" => $categories,
-    "user_name" => $user_name,
-    "isAuth" => $isAuth
-  ]);
+      "error" => $error,
+      "categories" => $categories,
+      "user_name" => $user_name,
+      "isAuth" => $isAuth
+    ]);
 }
 
 mysqli_set_charset($linkDB, "utf8");
@@ -34,10 +34,10 @@ $resultCategories = mysqli_query($linkDB, $sqlCategories);
 if (!$resultCategories) {
     $error = mysqli_error($linkDB);
     showErrorTemplateAndDie([
-    "error" => $error,
-    "categories" => $categories,
-    "user_name" => $user_name,
-    "isAuth" => $isAuth
+      "error" => $error,
+      "categories" => $categories,
+      "user_name" => $user_name,
+      "isAuth" => $isAuth
     ]);
 }
 

@@ -4,8 +4,8 @@ require "init.php";
 $categoriesNav = include_template(
     'categories-nav.php',
     [
-    "categories" => $categories,
-    "categoriesIdCurrent" => $categoriesIdCurrent
+        "categories" => $categories,
+        "categoriesIdCurrent" => $categoriesIdCurrent
     ]
 );
 
@@ -14,11 +14,11 @@ if ($isAuth) {
     header("Refresh: $seconds; url=/");
     $error = "Вы уже зашли на сайт, через $seconds секунд вас перенаправит на главную страницу сайта.";
     showErrorTemplateAndDie([
-    "categories" => $categories,
-    "error" => $error,
-    "user_name" => $user_name,
-    "isAuth" => $isAuth,
-    "categoriesIdCurrent" => $categoriesIdCurrent
+        "categories" => $categories,
+        "error" => $error,
+        "user_name" => $user_name,
+        "isAuth" => $isAuth,
+        "categoriesIdCurrent" => $categoriesIdCurrent
     ]);
 }
 
@@ -26,20 +26,20 @@ $errors = [];
 
 if ($_SERVER['REQUEST_METHOD'] === "POST") {
     $user = [
-    "email" => !empty($_POST["email"]) ? trim($_POST["email"]) : '',
-    "password" => !empty($_POST["password"]) ? trim($_POST["password"]) : ''
+        "email" => !empty($_POST["email"]) ? trim($_POST["email"]) : '',
+        "password" => !empty($_POST["password"]) ? trim($_POST["password"]) : ''
     ];
 
     $required = ["email", "password"];
 
     $rules = [
-    "email" => function () use ($user) {
-        return validateEmailSignIn($user["email"]);
-    },
-    "password" => function () use ($user) {
-        return validateLength($user['password'], 6, 20);
-    }
-  ];
+        "email" => function () use ($user) {
+            return validateEmailSignIn($user["email"]);
+        },
+        "password" => function () use ($user) {
+            return validateLength($user['password'], 6, 20);
+        }
+    ];
 
     foreach ($required as $key) {
         if (empty($user[$key])) {
@@ -66,8 +66,8 @@ if ($_SERVER['REQUEST_METHOD'] === "POST") {
 
         if (isset($arr) && password_verify($saltPwd . $user["password"] . $saltPwd, $arr["password"])) {
             $_SESSION["userInfo"] = [
-            "id" => $arr["id"],
-            "name" => $arr["name"],
+                "id" => $arr["id"],
+                "name" => $arr["name"],
             ];
             header("Location: /");
             die;
@@ -79,17 +79,17 @@ if ($_SERVER['REQUEST_METHOD'] === "POST") {
     $content = include_template(
         'login.php',
         [
-        "categories" => $categories,
-        "categoriesNav" => $categoriesNav,
-        "errors" => $errors
+            "categories" => $categories,
+            "categoriesNav" => $categoriesNav,
+            "errors" => $errors
         ]
     );
 } else {
     $content = include_template(
         'login.php',
         [
-        "categories" => $categories,
-        "categoriesNav" => $categoriesNav
+            "categories" => $categories,
+            "categoriesNav" => $categoriesNav
         ]
     );
 }
@@ -97,12 +97,12 @@ if ($_SERVER['REQUEST_METHOD'] === "POST") {
 $layout = include_template(
     'layout.php',
     [
-    "title" => "Вход на сайт - YetiCave",
-    "categories" => $categories,
-    "content" => $content,
-    "user_name" => $user_name,
-    "isAuth" => $isAuth,
-    "categoriesNav" => $categoriesNav
+        "title" => "Вход на сайт - YetiCave",
+        "categories" => $categories,
+        "content" => $content,
+        "user_name" => $user_name,
+        "isAuth" => $isAuth,
+        "categoriesNav" => $categoriesNav
     ]
 );
 

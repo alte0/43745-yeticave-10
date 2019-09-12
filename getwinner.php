@@ -2,8 +2,8 @@
 require_once "vendor/autoload.php";
 
 $arrData = [
-  "categories" => $categories, "user_name" => $user_name, "isAuth" => $isAuth,
-  "categoriesIdCurrent" => $categoriesIdCurrent
+    "categories" => $categories, "user_name" => $user_name, "isAuth" => $isAuth,
+    "categoriesIdCurrent" => $categoriesIdCurrent
 ];
 
 $transport = new Swift_SmtpTransport("phpdemo.ru", 25);

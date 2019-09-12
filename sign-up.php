@@ -4,8 +4,8 @@ require "init.php";
 $categoriesNav = include_template(
     'categories-nav.php',
     [
-    "categories" => $categories,
-    "categoriesIdCurrent" => $categoriesIdCurrent
+        "categories" => $categories,
+        "categoriesIdCurrent" => $categoriesIdCurrent
     ]
 );
 
@@ -15,11 +15,11 @@ if ($isAuth) {
     header("Refresh: $seconds; url=/");
     $error = "Вы уже зарегестрированны на сайте, через $seconds секунд вас перенаправит на главную страницу сайта.";
     showErrorTemplateAndDie([
-    "categories" => $categories,
-    "error" => $error,
-    "user_name" => $user_name,
-    "isAuth" => $isAuth,
-    "categoriesIdCurrent" => $categoriesIdCurrent
+        "categories" => $categories,
+        "error" => $error,
+        "user_name" => $user_name,
+        "isAuth" => $isAuth,
+        "categoriesIdCurrent" => $categoriesIdCurrent
     ]);
 }
 
@@ -27,10 +27,10 @@ $errors = [];
 
 if ($_SERVER['REQUEST_METHOD'] === "POST") {
     $user = [
-    "email" => !empty($_POST["email"]) ? trim($_POST["email"]) : '',
-    "password" => !empty($_POST["password"]) ? trim($_POST["password"]) : '',
-    "name" => !empty($_POST["name"]) ? trim($_POST["name"]) : '',
-    "message" => !empty($_POST["message"]) ? trim($_POST["message"]) : ''
+        "email" => !empty($_POST["email"]) ? trim($_POST["email"]) : '',
+        "password" => !empty($_POST["password"]) ? trim($_POST["password"]) : '',
+        "name" => !empty($_POST["name"]) ? trim($_POST["name"]) : '',
+        "message" => !empty($_POST["message"]) ? trim($_POST["message"]) : ''
     ];
 
     $required = ["email", "password", "name", "message"];
@@ -69,11 +69,11 @@ if ($_SERVER['REQUEST_METHOD'] === "POST") {
         if ($hashPwd = password_hash($saltPwd . $user["password"] . $saltPwd, PASSWORD_DEFAULT)) {
             $sqlUser = "INSERT INTO users (email, name, password, contacts) VALUES (?, ?, ?, ?)";
             $stmt = db_get_prepare_stmt($linkDB, $sqlUser, [
-            $user["email"],
-            $user["name"],
-            $hashPwd,
-            $user["message"]
-          ]);
+                $user["email"],
+                $user["name"],
+                $hashPwd,
+                $user["message"]
+            ]);
             $result = mysqli_stmt_execute($stmt);
 
             if ($result) {
@@ -84,33 +84,33 @@ if ($_SERVER['REQUEST_METHOD'] === "POST") {
     }
 
     $content = include_template(
-      'sign-up.php',
-      [
-      "categories" => $categories,
-      "categoriesNav" => $categoriesNav,
-      "errors" => $errors
-      ]
-  );
+        'sign-up.php',
+        [
+            "categories" => $categories,
+            "categoriesNav" => $categoriesNav,
+            "errors" => $errors
+        ]
+    );
 } else {
     $content = include_template(
-      'sign-up.php',
-      [
-      "categories" => $categories,
-      "categoriesNav" => $categoriesNav
-      ]
-  );
+        'sign-up.php',
+        [
+            "categories" => $categories,
+            "categoriesNav" => $categoriesNav
+        ]
+    );
 }
 
 $layout = include_template(
     'layout.php',
     [
-    "title" => "Регистрация аккаунта - YetiCave",
-    "categories" => $categories,
-    "content" => $content,
-    "user_name" => $user_name,
-    "isAuth" => $isAuth,
-    "categoriesNav" => $categoriesNav
-  ]
+        "title" => "Регистрация аккаунта - YetiCave",
+        "categories" => $categories,
+        "content" => $content,
+        "user_name" => $user_name,
+        "isAuth" => $isAuth,
+        "categoriesNav" => $categoriesNav
+    ]
 );
 
 print($layout);

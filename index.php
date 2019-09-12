@@ -11,12 +11,12 @@ $resultAnnouncements = mysqli_query($linkDB, $sqlAnnouncements);
 if (!$resultAnnouncements) {
     $error = mysqli_error($linkDB);
     showErrorTemplateAndDie([
-    "error" => $error,
-    "categories" => $categories,
-    "content" => $content,
-    "user_name" => $user_name,
-    "isAuth" => $isAuth,
-    "categoriesIdCurrent" => $categoriesIdCurrent
+        "error" => $error,
+        "categories" => $categories,
+        "content" => $content,
+        "user_name" => $user_name,
+        "isAuth" => $isAuth,
+        "categoriesIdCurrent" => $categoriesIdCurrent
     ]);
 }
 
@@ -25,28 +25,28 @@ $announcements = mysqli_fetch_all($resultAnnouncements, MYSQLI_ASSOC);
 $content = include_template(
     'main.php',
     [
-    "categories" => $categories,
-    "announcements" => $announcements
+        "categories" => $categories,
+        "announcements" => $announcements
     ]
 );
 
 $categoriesNav = include_template(
     'categories-nav.php',
     [
-    "categories" => $categories,
-    "categoriesIdCurrent" => $categoriesIdCurrent
+        "categories" => $categories,
+        "categoriesIdCurrent" => $categoriesIdCurrent
     ]
 );
 
 $layout = include_template(
     'layout.php',
     [
-    "title" => "Главная - YetiCave",
-    "categories" => $categories,
-    "content" => $content,
-    "user_name" => $user_name,
-    "isAuth" => $isAuth,
-    "categoriesNav" => $categoriesNav
+        "title" => "Главная - YetiCave",
+        "categories" => $categories,
+        "content" => $content,
+        "user_name" => $user_name,
+        "isAuth" => $isAuth,
+        "categoriesNav" => $categoriesNav
     ]
 );
 

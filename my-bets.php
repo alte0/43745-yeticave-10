@@ -7,11 +7,11 @@ if (!$isAuth) {
     header("Refresh: $seconds; url=/login.php");
     $error = "Вы не можите просматривать эту страницу, так как не вошли на сайт. Через $seconds секунд вас перенаправит на страницу входа.";
     showErrorTemplateAndDie([
-    "categories" => $categories,
-    "error" => $error,
-    "user_name" => $user_name,
-    "isAuth" => $isAuth,
-    "categoriesIdCurrent" => $categoriesIdCurrent
+        "categories" => $categories,
+        "error" => $error,
+        "user_name" => $user_name,
+        "isAuth" => $isAuth,
+        "categoriesIdCurrent" => $categoriesIdCurrent
     ]);
 }
 
@@ -23,11 +23,11 @@ if (!$resultMyBets || mysqli_num_rows($resultMyBets) === 0) {
     $error = "Произошла ошибка в базе данных - " . mysqli_error($linkDB);
 
     showErrorTemplateAndDie([
-    "error" => $error,
-    "categories" => $categories,
-    "user_name" => $user_name,
-    "isAuth" => $isAuth,
-    "categoriesIdCurrent" => $categoriesIdCurrent
+        "error" => $error,
+        "categories" => $categories,
+        "user_name" => $user_name,
+        "isAuth" => $isAuth,
+        "categoriesIdCurrent" => $categoriesIdCurrent
     ]);
 }
 
@@ -36,30 +36,30 @@ $myBets = mysqli_fetch_all($resultMyBets, MYSQLI_ASSOC);
 $categoriesNav = include_template(
     'categories-nav.php',
     [
-    "categories" => $categories,
-    "categoriesIdCurrent" => $categoriesIdCurrent
+        "categories" => $categories,
+        "categoriesIdCurrent" => $categoriesIdCurrent
     ]
 );
 
 $content = include_template(
     'my-bets.php',
     [
-    "categories" => $categories,
-    "myBets" => $myBets,
-    "today" => $today,
-    "categoriesNav" => $categoriesNav
+        "categories" => $categories,
+        "myBets" => $myBets,
+        "today" => $today,
+        "categoriesNav" => $categoriesNav
     ]
 );
 
 $layout = include_template(
     'layout.php',
     [
-    "title" => "Мои ставки - YetiCave",
-    "categories" => $categories,
-    "content" => $content,
-    "user_name" => $user_name,
-    "isAuth" => $isAuth,
-    "categoriesNav" => $categoriesNav
+        "title" => "Мои ставки - YetiCave",
+        "categories" => $categories,
+        "content" => $content,
+        "user_name" => $user_name,
+        "isAuth" => $isAuth,
+        "categoriesNav" => $categoriesNav
     ]
 );
 

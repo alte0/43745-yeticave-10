@@ -3,8 +3,10 @@ require "init.php";
 
 $errors = [];
 $arrData = [
-"categories" => $categories, "user_name" => $user_name, "isAuth" => $isAuth,
-"categoriesIdCurrent" => $categoriesIdCurrent
+    "categories" => $categories, 
+    "user_name" => $user_name, 
+    "isAuth" => $isAuth, 
+    "categoriesIdCurrent" => $categoriesIdCurrent
 ];
 $isVisibleForm = true;
 
@@ -39,22 +41,27 @@ if (isset($_GET["id"]) && $lot = getLotById($_GET["id"], $linkDB, $arrData)) {
     );
 }
 
-if (!$isAuth || isset($errors["whose-lot"]) || isset($errors["whose-last-bet"]) || isset($errors["date-completion-bet"])) {
+if (
+    !$isAuth || 
+    isset($errors["whose-lot"]) || 
+    isset($errors["whose-last-bet"]) || 
+    isset($errors["date-completion-bet"])
+    ) {
     $isVisibleForm = !$isVisibleForm;
 }
 
 if ($isAuth && $_SERVER["REQUEST_METHOD"] === "POST" && $isVisibleForm) {
     $bet = [
-    "cost" => !empty($_POST["cost"]) ? trim($_POST["cost"]) : ''
-  ];
+        "cost" => !empty($_POST["cost"]) ? trim($_POST["cost"]) : ''
+    ];
 
     $required = ["cost"];
 
     $rules = [
-    "cost" => function () use ($lot, $bet) {
-        return checkMinBet($lot["price"], $lot["step"], $bet["cost"]);
-    }
-  ];
+        "cost" => function () use ($lot, $bet) {
+            return checkMinBet($lot["price"], $lot["step"], $bet["cost"]);
+        }
+    ];
 
     foreach ($required as $key) {
         if (empty($bet[$key])) {
@@ -74,9 +81,9 @@ if ($isAuth && $_SERVER["REQUEST_METHOD"] === "POST" && $isVisibleForm) {
     if (!count($errors)) {
         $sqlBet = "INSERT INTO bets (price, user_id, lot_id) VALUES (?, ?, ?)";
         $stmt = db_get_prepare_stmt($linkDB, $sqlBet, [
-        $bet["cost"],
-        $userID,
-        $lot["id"]
+            $bet["cost"],
+            $userID,
+            $lot["id"]
         ]);
         $result = mysqli_stmt_execute($stmt);
 
@@ -95,12 +102,12 @@ if (isset($lot["id"])) {
     $content = include_template(
         'lot.php',
         [
-        "lot" => $lot,
-        "bets" => $bets,
-        "isAuth" => $isAuth,
-        "isVisibleForm" => $isVisibleForm,
-        "today" => $today,
-        "errors" => $errors
+            "lot" => $lot,
+            "bets" => $bets,
+            "isAuth" => $isAuth,
+            "isVisibleForm" => $isVisibleForm,
+            "today" => $today,
+            "errors" => $errors
         ]
     );
 }
@@ -108,20 +115,20 @@ if (isset($lot["id"])) {
 $categoriesNav = include_template(
     'categories-nav.php',
     [
-    "categories" => $categories,
-    "categoriesIdCurrent" => $categoriesIdCurrent
+        "categories" => $categories,
+        "categoriesIdCurrent" => $categoriesIdCurrent
     ]
 );
 
 $layout = include_template(
     'layout.php',
     [
-    "title" => "Главная - YetiCave",
-    "categories" => $categories,
-    "content" => $content,
-    "user_name" => $user_name,
-    "isAuth" => $isAuth,
-    "categoriesNav" => $categoriesNav
+        "title" => "Главная - YetiCave",
+        "categories" => $categories,
+        "content" => $content,
+        "user_name" => $user_name,
+        "isAuth" => $isAuth,
+        "categoriesNav" => $categoriesNav
     ]
 );
 

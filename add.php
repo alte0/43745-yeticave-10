@@ -7,26 +7,26 @@ if (!$isAuth) {
     header("Refresh: $seconds; url=/");
     $error = "Вы не вошли на сайт, через $seconds секунд вас перенаправит на главную страницу сайта.";
     showErrorTemplateAndDie([
-    "categories" => $categories,
-    "error" => $error,
-    "user_name" => $user_name,
-    "isAuth" => $isAuth,
-    "categoriesIdCurrent" => $categoriesIdCurrent
-  ]);
+        "categories" => $categories,
+        "error" => $error,
+        "user_name" => $user_name,
+        "isAuth" => $isAuth,
+        "categoriesIdCurrent" => $categoriesIdCurrent
+    ]);
 }
 
 $errors = [];
 
 if ($_SERVER['REQUEST_METHOD'] === "POST") {
     $lot = [
-    "lot-name" => !empty($_POST["lot-name"]) ? trim($_POST["lot-name"]) : '',
-    "category" => !empty($_POST["category"]) && is_numeric($_POST["category"]) ? trim($_POST["category"]) : 0,
-    "message" => !empty($_POST["message"]) ? trim($_POST["message"]) : '',
-    "lot-image" => !empty($_FILES["lot-image"]) ? $_FILES["lot-image"] : [],
-    "lot-rate" => !empty($_POST["lot-rate"]) ? trim($_POST["lot-rate"]) : '',
-    "lot-step" => !empty($_POST["lot-step"]) ? trim($_POST["lot-step"]) : '',
-    "lot-date" => !empty($_POST["lot-date"]) ? trim($_POST["lot-date"]) : ''
-  ];
+        "lot-name" => !empty($_POST["lot-name"]) ? trim($_POST["lot-name"]) : '',
+        "category" => !empty($_POST["category"]) && is_numeric($_POST["category"]) ? trim($_POST["category"]) : 0,
+        "message" => !empty($_POST["message"]) ? trim($_POST["message"]) : '',
+        "lot-image" => !empty($_FILES["lot-image"]) ? $_FILES["lot-image"] : [],
+        "lot-rate" => !empty($_POST["lot-rate"]) ? trim($_POST["lot-rate"]) : '',
+        "lot-step" => !empty($_POST["lot-step"]) ? trim($_POST["lot-step"]) : '',
+        "lot-date" => !empty($_POST["lot-date"]) ? trim($_POST["lot-date"]) : ''
+    ];
 
     $required = ["lot-name", "category", "message", "lot-rate", "lot-step", "lot-date"];
 
@@ -80,14 +80,14 @@ if ($_SERVER['REQUEST_METHOD'] === "POST") {
 
         $sqlLot = "INSERT INTO lots (name, description, start_price, image, step, date_completion, user_id, category_id) VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
         $stmt = db_get_prepare_stmt($linkDB, $sqlLot, [
-        $lot["lot-name"],
-        $lot["message"],
-        $lot["lot-rate"],
-        $lot["path"],
-        $lot["lot-step"],
-        $lot["lot-date"],
-        $userID,
-        $lot["category"]
+            $lot["lot-name"],
+            $lot["message"],
+            $lot["lot-rate"],
+            $lot["path"],
+            $lot["lot-step"],
+            $lot["lot-date"],
+            $userID,
+            $lot["category"]
         ]);
         $result = mysqli_stmt_execute($stmt);
 
@@ -100,39 +100,39 @@ if ($_SERVER['REQUEST_METHOD'] === "POST") {
     }
 
     $content = include_template(
-      'add.php',
-      [
-      "categories" => $categories,
-      "errors" => $errors
-    ]
-  );
+        'add.php',
+        [
+            "categories" => $categories,
+            "errors" => $errors
+        ]
+    );
 } else {
     $content = include_template(
-      'add.php',
-      [
-      "categories" => $categories
-    ]
-  );
+        'add.php',
+        [
+            "categories" => $categories
+        ]
+    );
 }
 
 $categoriesNav = include_template(
     'categories-nav.php',
     [
-    "categories" => $categories,
-    "categoriesIdCurrent" => $categoriesIdCurrent
-  ]
+        "categories" => $categories,
+        "categoriesIdCurrent" => $categoriesIdCurrent
+    ]
 );
 
 $layout = include_template(
     'layout.php',
     [
-    "title" => "Добавление нового лота - YetiCave",
-    "categories" => $categories,
-    "content" => $content,
-    "user_name" => $user_name,
-    "isAuth" => $isAuth,
-    "categoriesNav" => $categoriesNav
-  ]
+        "title" => "Добавление нового лота - YetiCave",
+        "categories" => $categories,
+        "content" => $content,
+        "user_name" => $user_name,
+        "isAuth" => $isAuth,
+        "categoriesNav" => $categoriesNav
+    ]
 );
 
 print($layout);

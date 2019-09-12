@@ -14,12 +14,12 @@ if (isset($_GET["search"]) && !empty($_GET["search"])) {
     if (!$resultSearchCount) {
         $error = mysqli_error($linkDB);
         showErrorTemplateAndDie([
-        "error" => $error,
-        "categories" => $categories,
-        "content" => $content,
-        "user_name" => $user_name,
-        "isAuth" => $isAuth,
-        "categoriesIdCurrent" => $categoriesIdCurrent
+            "error" => $error,
+            "categories" => $categories,
+            "content" => $content,
+            "user_name" => $user_name,
+            "isAuth" => $isAuth,
+            "categoriesIdCurrent" => $categoriesIdCurrent
         ]);
     }
 
@@ -39,12 +39,12 @@ if (isset($_GET["search"]) && !empty($_GET["search"])) {
     if (!$result) {
         $error = mysqli_error($linkDB);
         showErrorTemplateAndDie([
-        "error" => $error,
-        "categories" => $categories,
-        "content" => $content,
-        "user_name" => $user_name,
-        "isAuth" => $isAuth,
-        "categoriesIdCurrent" => $categoriesIdCurrent
+            "error" => $error,
+            "categories" => $categories,
+            "content" => $content,
+            "user_name" => $user_name,
+            "isAuth" => $isAuth,
+            "categoriesIdCurrent" => $categoriesIdCurrent
         ]);
     }
 
@@ -52,45 +52,45 @@ if (isset($_GET["search"]) && !empty($_GET["search"])) {
 } else {
     $error = "Не задан текст для поиска!";
     showErrorTemplateAndDie([
-    "categories" => $categories,
-    "error" => $error,
-    "user_name" => $user_name,
-    "isAuth" => $isAuth,
-    "categoriesIdCurrent" => $categoriesIdCurrent
+        "categories" => $categories,
+        "error" => $error,
+        "user_name" => $user_name,
+        "isAuth" => $isAuth,
+        "categoriesIdCurrent" => $categoriesIdCurrent
     ]);
 }
 
 $categoriesNav = include_template(
     'categories-nav.php',
     [
-    "categories" => $categories,
-    "categoriesIdCurrent" => $categoriesIdCurrent,
+        "categories" => $categories,
+        "categoriesIdCurrent" => $categoriesIdCurrent,
     ]
 );
 
 $content = include_template(
     'search.php',
     [
-    "categories" => $categories,
-    "searchText" => $searchText,
-    "lots" => $lots,
-    'pages' => $pages,
-    'pages_count' => $pages_count,
-    'cur_page' => $cur_page,
-    'page_items' => $page_items,
-    "categoriesNav" => $categoriesNav
+        "categories" => $categories,
+        "searchText" => $searchText,
+        "lots" => $lots,
+        'pages' => $pages,
+        'pages_count' => $pages_count,
+        'cur_page' => $cur_page,
+        'page_items' => $page_items,
+        "categoriesNav" => $categoriesNav
     ]
 );
 
 $layout = include_template(
     'layout.php',
     [
-    "title" => "Результаты поиска - YetiCave",
-    "categories" => $categories,
-    "content" => $content,
-    "user_name" => $user_name,
-    "isAuth" => $isAuth,
-    "categoriesNav" => $categoriesNav
+        "title" => "Результаты поиска - YetiCave",
+        "categories" => $categories,
+        "content" => $content,
+        "user_name" => $user_name,
+        "isAuth" => $isAuth,
+        "categoriesNav" => $categoriesNav
     ]
 );
 

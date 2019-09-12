@@ -2,8 +2,8 @@
 require "init.php";
 
 $arrData = [
-  "categories" => $categories, "user_name" => $user_name, "isAuth" => $isAuth,
-  "categoriesIdCurrent" => $categoriesIdCurrent
+    "categories" => $categories, "user_name" => $user_name, "isAuth" => $isAuth,
+    "categoriesIdCurrent" => $categoriesIdCurrent
 ];
 
 if (isset($_GET["id"]) && is_numeric($_GET["id"]) && $categoryName = getCategoryName($_GET["id"], $linkDB, $arrData)) {
@@ -21,12 +21,12 @@ if (isset($_GET["id"]) && is_numeric($_GET["id"]) && $categoryName = getCategory
     if (!$resultSearchCount) {
         $error = mysqli_error($linkDB);
         showErrorTemplateAndDie([
-        "error" => $error,
-        "categories" => $categories,
-        "content" => $content,
-        "user_name" => $user_name,
-        "isAuth" => $isAuth,
-        "categoriesIdCurrent" => $categoriesIdCurrent
+            "error" => $error,
+            "categories" => $categories,
+            "content" => $content,
+            "user_name" => $user_name,
+            "isAuth" => $isAuth,
+            "categoriesIdCurrent" => $categoriesIdCurrent
         ]);
     }
 
@@ -46,12 +46,12 @@ if (isset($_GET["id"]) && is_numeric($_GET["id"]) && $categoryName = getCategory
     if (!$result) {
         $error = mysqli_error($linkDB);
         showErrorTemplateAndDie([
-        "error" => $error,
-        "categories" => $categories,
-        "content" => $content,
-        "user_name" => $user_name,
-        "isAuth" => $isAuth,
-        "categoriesIdCurrent" => $categoriesIdCurrent
+            "error" => $error,
+            "categories" => $categories,
+            "content" => $content,
+            "user_name" => $user_name,
+            "isAuth" => $isAuth,
+            "categoriesIdCurrent" => $categoriesIdCurrent
         ]);
     }
 
@@ -59,46 +59,46 @@ if (isset($_GET["id"]) && is_numeric($_GET["id"]) && $categoryName = getCategory
 } else {
     $error = "Не найдена категория!";
     showErrorTemplateAndDie([
-    "categories" => $categories,
-    "error" => $error,
-    "user_name" => $user_name,
-    "isAuth" => $isAuth,
-    "categoriesIdCurrent" => $categoriesIdCurrent
+        "categories" => $categories,
+        "error" => $error,
+        "user_name" => $user_name,
+        "isAuth" => $isAuth,
+        "categoriesIdCurrent" => $categoriesIdCurrent
     ]);
 }
 
 $categoriesNav = include_template(
     'categories-nav.php',
     [
-    "categories" => $categories,
-    "categoriesIdCurrent" => $categoriesIdCurrent
+        "categories" => $categories,
+        "categoriesIdCurrent" => $categoriesIdCurrent
     ]
 );
 
 $content = include_template(
     'all-lots.php',
     [
-    "categories" => $categories,
-    "lots" => $lots,
-    "searchCategory" => $searchCategory,
-    'pages' => $pages,
-    'pages_count' => $pages_count,
-    'cur_page' => $cur_page,
-    'page_items' => $page_items,
-    "categoriesNav" => $categoriesNav,
-    "categoryName" => $categoryName
+        "categories" => $categories,
+        "lots" => $lots,
+        "searchCategory" => $searchCategory,
+        'pages' => $pages,
+        'pages_count' => $pages_count,
+        'cur_page' => $cur_page,
+        'page_items' => $page_items,
+        "categoriesNav" => $categoriesNav,
+        "categoryName" => $categoryName
     ]
 );
 
 $layout = include_template(
     'layout.php',
     [
-    "title" => "Все лоты категории $categoriesIdCurrent - YetiCave",
-    "categories" => $categories,
-    "content" => $content,
-    "user_name" => $user_name,
-    "isAuth" => $isAuth,
-    "categoriesNav" => $categoriesNav
+        "title" => "Все лоты категории $categoriesIdCurrent - YetiCave",
+        "categories" => $categories,
+        "content" => $content,
+        "user_name" => $user_name,
+        "isAuth" => $isAuth,
+        "categoriesNav" => $categoriesNav
     ]
 );
 
