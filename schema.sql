@@ -29,7 +29,6 @@ CREATE TABLE `lots` (
     `description` VARCHAR(1000) NOT NULL, 
     `image` VARCHAR(255) NOT NULL , 
     `start_price` INT UNSIGNED NOT NULL , 
-    `price_current` INT,
     `date_completion` TIMESTAMP NOT NULL , 
     `step` INT UNSIGNED NOT NULL , 
     `user_id` INT NOT NULL , 
