@@ -91,9 +91,7 @@ if ($isAuth && $_SERVER["REQUEST_METHOD"] === "POST" && $isVisibleForm) {
             $errors["cost"] = "Не удалось добавить ставку! Попробуйте ещё раз";
         }
 
-        $lot = getLotById($_GET["id"], $linkDB, $arrData);
-        $bets = getBetsForId($_GET["id"], $linkDB, $arrData);
-        $isVisibleForm = !$isVisibleForm;
+        header("Location: " . $_SERVER["REQUEST_URI"]);
     }
 }
 
