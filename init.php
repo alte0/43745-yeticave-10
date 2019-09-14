@@ -1,7 +1,9 @@
 <?php
 
 session_start();
+// !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 date_default_timezone_set("Asia/Yekaterinburg");
+// !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 require "helpers.php";
 require "config/php-ini.php";
 $dbConf = require_once 'config/db.php';
@@ -12,7 +14,7 @@ $isAuth = isset($_SESSION["userInfo"]);
 $user_name = isset($_SESSION["userInfo"]) ? $_SESSION["userInfo"]["name"] : "";
 $userID = isset($_SESSION["userInfo"]) ? $_SESSION["userInfo"]["id"] : 0;
 $categoriesIdCurrent = 0;
-$page_items = 9;
+$page_items = 1;
 $linkDB = mysqli_connect($dbConf["urlDB"], $dbConf["userDB"], $dbConf["passwordDB"], $dbConf["nameDB"]);
 
 if (!$linkDB) {

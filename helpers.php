@@ -398,7 +398,8 @@ function getLotById($getId, $linkDB, array $otherData = [])
 {
     extract($otherData);
     $getId = intval($getId) < 0 ? 0 : intval($getId);
-    $sqlLot = "SELECT l.id, l.date_completion, l.name, l.start_price, l.image, l.category_id, l.step, l.description, l.user_id, c.name AS category_name, b.user_id AS last_bet_user_id, IFNULL(max(b.price), l.start_price) AS price FROM lots l INNER JOIN сategories c ON l.category_id = c.id LEFT JOIN bets b ON l.id = b.lot_id WHERE l.id = $getId GROUP BY b.user_id";
+    $sqlLot = "SELECT l.id, l.date_completion, l.name, l.start_price, l.image, l.category_id, l.step, l.description, l.user_id, c.name AS category_name, b.user_id AS last_bet_user_id, IFNULL(max(b.price), l.start_price) AS price FROM lots l INNER JOIN сategories c ON l.category_id = c.id LEFT JOIN bets b ON l.id = b.lot_id WHERE l.id = $getId GROUP BY b.user_id ORDER BY price DESC";
+
     $resultLot = mysqli_query($linkDB, $sqlLot);
 
     if (!$resultLot) {
@@ -576,7 +577,7 @@ function getLotsWithoutWinners($today, $linkDB, array $otherData = [])
 {
     extract($otherData);
 
-    $sql = "SELECT t.lot_id, l.name AS name_lot, b.user_id AS winner_id, u.name, u.email FROM (SELECT lot_id, MAX(price) AS price FROM bets GROUP BY lot_id ) AS t INNER JOIN bets b ON t.price = b.price INNER JOIN lots l ON t.lot_id = l.id AND l.user_id_winner IS NULL AND l.date_completion <= ? INNER JOIN users u ON b.user_id = u.id";
+    $sql = "SELECT t.lot_id, l.name AS name_lot, b.user_id AS winner_id, u.name, u.email FROM (SELECT lot_id, MAX(price) AS price FROM bets GROUP BY lot_id ) AS t INNER JOIN bets b ON t.price = b.price AND t.lot_id = b.lot_id INNER JOIN lots l ON t.lot_id = l.id AND l.user_id_winner IS NULL AND l.date_completion <= ? INNER JOIN users u ON b.user_id = u.id";
 
     $stmt = db_get_prepare_stmt($linkDB, $sql, [$today]);
     mysqli_stmt_execute($stmt);

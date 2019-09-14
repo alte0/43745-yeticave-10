@@ -5,7 +5,7 @@ if (!$isAuth) {
     $seconds = 6;
     header('HTTP/1.0 403 Forbidden', true, 403);
     header("Refresh: $seconds; url=/login.php");
-    $error = "Вы не можите просматривать эту страницу, так как не вошли на сайт. Через $seconds секунд вас перенаправит на страницу входа.";
+    $error = "Вы не можите просматривать эту страницу, так как не вошли на сайт. Через $seconds сек. вас перенаправит на страницу входа.";
     showErrorTemplateAndDie([
         "categories" => $categories,
         "error" => $error,
@@ -19,7 +19,7 @@ $sqlMyBets = "SELECT l.id, l.date_completion, l.name, l.image, l.user_id, l.user
 
 $resultMyBets = mysqli_query($linkDB, $sqlMyBets);
 
-if (!$resultMyBets || mysqli_num_rows($resultMyBets) === 0) {
+if (!$resultMyBets) {
     $error = "Произошла ошибка в базе данных - " . mysqli_error($linkDB);
 
     showErrorTemplateAndDie([

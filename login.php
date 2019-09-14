@@ -12,7 +12,7 @@ $categoriesNav = include_template(
 if ($isAuth) {
     $seconds = 6;
     header("Refresh: $seconds; url=/");
-    $error = "Вы уже зашли на сайт, через $seconds секунд вас перенаправит на главную страницу сайта.";
+    $error = "Вы уже зашли на сайт, через $seconds сек. вас перенаправит на главную страницу сайта.";
     showErrorTemplateAndDie([
         "categories" => $categories,
         "error" => $error,
@@ -27,7 +27,7 @@ $errors = [];
 if ($_SERVER['REQUEST_METHOD'] === "POST") {
     $user = [
         "email" => !empty($_POST["email"]) ? trim($_POST["email"]) : '',
-        "password" => !empty($_POST["password"]) ? trim($_POST["password"]) : ''
+        "password" => isset($_POST["password"]) ? $_POST["password"] : ''
     ];
 
     $required = ["email", "password"];

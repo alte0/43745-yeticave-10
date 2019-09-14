@@ -13,7 +13,7 @@ if ($isAuth) {
     $seconds = 6;
     header('HTTP/1.0 403 Forbidden', true, 403);
     header("Refresh: $seconds; url=/");
-    $error = "Вы уже зарегестрированны на сайте, через $seconds секунд вас перенаправит на главную страницу сайта.";
+    $error = "Вы уже зарегестрированны на сайте, через $seconds сек. вас перенаправит на главную страницу сайта.";
     showErrorTemplateAndDie([
         "categories" => $categories,
         "error" => $error,

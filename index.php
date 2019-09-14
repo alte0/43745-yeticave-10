@@ -51,3 +51,4 @@ $layout = include_template(
 );
 
 print($layout);
+var_dump($lotsWinner);

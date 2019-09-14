@@ -123,7 +123,7 @@ $categoriesNav = include_template(
 $layout = include_template(
     'layout.php',
     [
-        "title" => "Главная - YetiCave",
+        "title" => $title,
         "categories" => $categories,
         "content" => $content,
         "user_name" => $user_name,

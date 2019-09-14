@@ -13,7 +13,7 @@
         <div class="lot-item__state">
           <?php $time = calcDateExpiration($lot["date_completion"]); ?>
           <div class="lot-item__timer timer <?= $time["hours"] < 1 ? "timer--finishing" : "" ?>">
-            <?= "{$time["hours"]}:{$time["minutes"]}:{$time["seconds"]}" ?>
+            <?= "{$time["hours"]}:{$time["minutes"]}" ?>
           </div>
           <div class="lot-item__cost-state">
             <div class="lot-item__rate">
