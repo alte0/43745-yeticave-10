@@ -26,8 +26,8 @@ $errors = [];
 
 if ($_SERVER['REQUEST_METHOD'] === "POST") {
     $user = [
-        "email" => !empty($_POST["email"]) ? trim($_POST["email"]) : '',
-        "password" => isset($_POST["password"]) ? $_POST["password"] : ''
+        "email" => isset($_POST["email"]) && !empty($_POST["email"]) ? trim($_POST["email"]) : '',
+        "password" => isset($_POST["password"]) && !empty($_POST["password"]) ? $_POST["password"] : ''
     ];
 
     $required = ["email", "password"];

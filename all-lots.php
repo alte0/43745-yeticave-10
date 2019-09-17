@@ -6,13 +6,13 @@ $arrData = [
     "categoriesIdCurrent" => $categoriesIdCurrent
 ];
 
-if (isset($_GET["id"]) && is_numeric($_GET["id"]) && $categoryName = getCategoryName($_GET["id"], $linkDB, $arrData)) {
+if (isset($_GET["id"]) && is_numeric($_GET["id"]) && null !== $categoryName = getCategoryName($_GET["id"], $linkDB, $arrData)) {
     $searchCategory = intval(trim($_GET["id"]));
     $categoriesIdCurrent = $searchCategory;
     $cur_page = isset($_GET['page']) ? intval($_GET['page']) : 1;
 
 
-    $sqlSearchCount = "SELECT COUNT(*) as count FROM (SELECT lots.*, c.name AS category FROM lots INNER JOIN сategories c ON lots.category_id = c.id LEFT JOIN bets b ON lots.id = b.lot_id WHERE lots.date_completion >= ? AND lots.category_id = ?) AS t";
+    $sqlSearchCount = "SELECT COUNT(*) as count FROM (SELECT lots.*, c.name AS category FROM lots INNER JOIN сategories c ON lots.category_id = c.id WHERE lots.date_completion >= ? AND lots.category_id = ?) AS t";
 
     $stmtCount = db_get_prepare_stmt($linkDB, $sqlSearchCount, [$today, $searchCategory]);
     mysqli_stmt_execute($stmtCount);
@@ -37,7 +37,7 @@ if (isset($_GET["id"]) && is_numeric($_GET["id"]) && $categoryName = getCategory
 
     $pages = range(1, $pages_count);
 
-    $sqlSearchCategoryId = "SELECT lots.*, c.name AS category FROM lots INNER JOIN сategories c ON lots.category_id = c.id LEFT JOIN bets b ON lots.id = b.lot_id WHERE lots.date_completion >= ? AND lots.category_id = ? ORDER BY lots.date_create DESC LIMIT " . $page_items . " OFFSET " . $offset;
+    $sqlSearchCategoryId = "SELECT lots.*, c.name AS category FROM lots INNER JOIN сategories c ON lots.category_id = c.id WHERE lots.date_completion >= ? AND lots.category_id = ? ORDER BY lots.date_create DESC LIMIT " . $page_items . " OFFSET " . $offset;
 
     $stmt = db_get_prepare_stmt($linkDB, $sqlSearchCategoryId, [$today, $searchCategory]);
     mysqli_stmt_execute($stmt);

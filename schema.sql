@@ -24,12 +24,12 @@ CREATE TABLE `сategories` (
 
 CREATE TABLE `lots` ( 
     `id` INT NOT NULL AUTO_INCREMENT PRIMARY KEY, 
-    `date_create` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP , 
     `name` VARCHAR(255) NOT NULL, 
     `description` VARCHAR(1000) NOT NULL, 
     `image` VARCHAR(255) NOT NULL , 
     `start_price` INT UNSIGNED NOT NULL , 
     `date_completion` TIMESTAMP NOT NULL , 
+    `date_create` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP , 
     `step` INT UNSIGNED NOT NULL , 
     `user_id` INT NOT NULL , 
     `user_id_winner` INT, 

@@ -218,6 +218,7 @@ function calcDateExpiration($date): array
 /**
  * Функция показывает шаблон с ошибокой
  * @param array $data - ассоциативный массив для передачи данных;
+ * @return void
  */
 function showErrorTemplateAndDie(array $data)
 {
@@ -247,18 +248,19 @@ function showErrorTemplateAndDie(array $data)
 /**
  * Получения значения из $_POST для заполнеиня данных в форме.
  * @param string $name - имя ключа из массива $_POST для получения значения;
- * @return void
+ * @return string
  */
 function getPostVal($name)
 {
     // htmlentities для сохранения кавычек
-    return isset($_POST[$name]) ? htmlentities($_POST[$name]) : "";
+    return isset($_POST[$name]) ? htmlentities(trim($_POST[$name])) : "";
 }
 /**
  * Валидация строки
  * @param string $value - значение для валидации;
  * @param integer $min - минимальное значение длины строки;
  * @param integer $max - максимальное значение длины строки;
+ * @return string|null
  */
 function validateLength(string $value, int $min, int $max)
 {
@@ -274,6 +276,7 @@ function validateLength(string $value, int $min, int $max)
  * Валидация id категории из масива
  * @param string $value - значение для валидации;
  * @param resource $link - соединение с БД;
+ * @return string|null
  */
 function validateCategory($value, $link)
 {
@@ -296,6 +299,7 @@ function validateCategory($value, $link)
 /**
  * Валидация целого числа и и больше нуля
  * @param string $value - значение для валидации;
+ * @return string|null
  */
 function validateValueOnInteger($num)
 {
@@ -308,6 +312,7 @@ function validateValueOnInteger($num)
 /**
  * Валидация даты на формат и дата больше текущей даты, хотя бы на один день
  * @param string $date - значение для валидации;
+ * @return string|null
  */
 function validateFormatDateAndPlusMinOne($date)
 {
@@ -321,15 +326,16 @@ function validateFormatDateAndPlusMinOne($date)
 }
 /**
  * Валидация файла на тип image
- * @param string $name - значение для валидации;
+ * @param string $fileImage - значение для валидации;
+ * @return string|null
  */
-function validateFileAndTypeImage($file)
+function validateFileAndTypeImage($fileImage)
 {
-    if (empty($_FILES['lot-image']['name'])) {
+    if (empty($fileImage['name'])) {
         return  'Вы не загрузили файл';
     }
 
-    $filePath = $file["tmp_name"];
+    $filePath = $fileImage["tmp_name"];
     $fileType = mime_content_type($filePath);
 
     if (!($fileType === "image/png" || $fileType === "image/jpeg")) {
@@ -353,6 +359,7 @@ function addCommaAndSpaceText($str)
  * Валидация email на регистрацию.
  * @param string $value - значение для валидации;
  * @param resource $link - соединение с БД;
+ * @return string|null
  */
 function validateEmailSignUp($email, $link)
 {
@@ -379,6 +386,7 @@ function validateEmailSignUp($email, $link)
 /**
  * Валидация email на вход
  * @param string $value - значение для валидации;
+ * @return string|null
  */
 function validateEmailSignIn($email)
 {
@@ -393,6 +401,7 @@ function validateEmailSignIn($email)
  * @param string $getId - передоваемый id;
  * @param resource $linkDB - соединение с бд;
  * @param array $otherData - дополнительные данные в массиве;
+ * @return array  - возврашает массив;
  */
 function getLotById($getId, $linkDB, array $otherData = [])
 {
@@ -421,6 +430,7 @@ function getLotById($getId, $linkDB, array $otherData = [])
  * @param string $getId - передоваемый id;
  * @param resource $linkDB - соединение с бд;
  * @param array $otherData - дополнительные данные в массиве;
+ * @return array  - возврашает массив;
  */
 function getBetsForId($getId, $linkDB, array $otherData = [])
 {
@@ -485,6 +495,7 @@ function getAgoText($today, $timeBet)
  * @param integer $userID - id залогиного пользователя;
  * @param integer $lotUserId - id пользователя создавшего лот;
  * @param boolean $isMyLot - признак на принадлежность лота $userID === $lotUserId;
+ * @return string|null
  */
 function checkWhoseLot($userID, $lotUserId)
 {
@@ -499,6 +510,7 @@ function checkWhoseLot($userID, $lotUserId)
  * @param integer $userID - id залогиного пользователя;
  * @param integer $lotUserId - id пользователя создавшего лот;
  * @param boolean $isMyLastBet - признак на принадлежность последней ставки $userID === $lotUserId;
+ * @return string|null
  */
 function checkWhoseLastBet($userID, $last_bet_user_id)
 {
@@ -513,6 +525,7 @@ function checkWhoseLastBet($userID, $last_bet_user_id)
  * @param integer $userID - id залогиного пользователя;
  * @param integer $lotUserId - id пользователя создавшего лот;
  * @param boolean $isMyLot - признак на принадлежность лота $userID === $lotUserId;
+ * @return string|null
  */
 function checkDateCompletionBet($dateСompletion, $today)
 {
@@ -527,6 +540,7 @@ function checkDateCompletionBet($dateСompletion, $today)
  * @param integer $price - цена лота;
  * @param integer $step - шаг ставки на лот;
  * @param integer $cost - ставка пользователя на лот;
+ * @return string|null
  */
 function checkMinBet($price, $step, $cost)
 {
@@ -543,6 +557,7 @@ function checkMinBet($price, $step, $cost)
  * @param string $getId - передоваемый id;
  * @param resource $linkDB - соединение с бд;
  * @param array $otherData - дополнительные данные в массиве;
+ * @return array  - возврашает массив;
  */
 function getCategoryName($id, $linkDB, array $otherData = [])
 {
@@ -572,6 +587,7 @@ function getCategoryName($id, $linkDB, array $otherData = [])
  * @param string $today - сегодняшняя дата с временем;
  * @param resource $linkDB - соединение с бд;
  * @param array $otherData - дополнительные данные в массиве;
+ * @return array  - возврашает массив;
  */
 function getLotsWithoutWinners($today, $linkDB, array $otherData = [])
 {
@@ -602,6 +618,7 @@ function getLotsWithoutWinners($today, $linkDB, array $otherData = [])
  * @param string $id - id лота;
  * @param resource $linkDB - соединение с бд;
  * @param array $otherData - дополнительные данные в массиве;
+ * @return void
  */
 function setWinner($lotId, $winnerId, $linkDB, array $otherData = [])
 {

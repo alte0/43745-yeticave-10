@@ -10,19 +10,19 @@
           <?php foreach ($lots as $item) : ?>
             <li class="lots__item lot">
               <div class="lot__image">
-                <img src="../<?= $item["image"] ?>" width="350" height="260" alt="Сноуборд">
+                <img src="../<?= $item["image"] ?? "" ?>" width="350" height="260" alt="Сноуборд">
               </div>
               <div class="lot__info">
-                <span class="lot__category"><?= $item["category"] ?></span>
-                <h3 class="lot__title"><a class="text-link" href="/lot.php?id=<?= ($item["id"]) ?>"><?= clearStrDataTags($item["name"]) ?></a></h3>
+                <span class="lot__category"><?= $item["category"] ?? "" ?></span>
+                <h3 class="lot__title"><a class="text-link" href="/lot.php?id=<?= $item["id"] ?? "" ?>"><?= clearStrDataTags($item["name"] ?? "") ?></a></h3>
                 <div class="lot__state">
                   <div class="lot__rate">
                     <span class="lot__amount">Стартовая цена</span>
-                    <span class="lot__cost"><?= formatPrice($item["start_price"]) ?></span>
+                    <span class="lot__cost"><?= formatPrice($item["start_price"] ?? "") ?></span>
                   </div>
-                  <?php $time = calcDateExpiration($item["date_completion"]); ?>
-                  <div class="lot__timer timer <?= $time["hours"] < 1 ? "timer--finishing" : "" ?>">
-                    <?= "{$time["hours"]}:{$time["minutes"]}:{$time["seconds"]}" ?>
+                  <?php $time = isset($item["date_completion"]) ? calcDateExpiration($item["date_completion"]) : [] ?>
+                  <div class="lot__timer timer <?= isset($time["hours"]) && ($time["hours"] < 1) ? "timer--finishing" : "" ?>">
+                    <?= count($time) > 0 ? "{$time["hours"]}:{$time["minutes"]}:{$time["seconds"]}" : "н.д" ?>
                   </div>
                 </div>
               </div>
@@ -31,7 +31,7 @@
         </ul>
       <?php endif; ?>
     </section>
-    <?php if ((int) $pages_count >= $page_items && count($lots)) : ?>
+    <?php if ($pages_count > 1) : ?>
       <ul class="pagination-list">
         <?php
           $lastPage = $pages[count($pages) - 1];

@@ -47,6 +47,7 @@ $content = include_template(
         "categories" => $categories,
         "myBets" => $myBets,
         "today" => $today,
+        "userID" => $userID,
         "categoriesNav" => $categoriesNav
     ]
 );

@@ -10,7 +10,7 @@ $arrData = [
 ];
 $isVisibleForm = true;
 
-if (isset($_GET["id"]) && $lot = getLotById($_GET["id"], $linkDB, $arrData)) {
+if (isset($_GET["id"]) && null !== $lot = getLotById($_GET["id"], $linkDB, $arrData)) {
     $bets = getBetsForId($_GET["id"], $linkDB, $arrData);
     $checkRulesBase = ["whose-lot", "whose-last-bet", "date-completion-bet"];
 
@@ -52,7 +52,7 @@ if (
 
 if ($isAuth && $_SERVER["REQUEST_METHOD"] === "POST" && $isVisibleForm) {
     $bet = [
-        "cost" => !empty($_POST["cost"]) ? trim($_POST["cost"]) : ''
+        "cost" => isset($_POST["cost"]) && !empty($_POST["cost"]) ? trim($_POST["cost"]) : ''
     ];
 
     $required = ["cost"];

@@ -16,16 +16,24 @@ if (!$isAuth) {
 }
 
 $errors = [];
+$categoriesNav = include_template(
+    'categories-nav.php',
+    [
+        "categories" => $categories,
+        "categoriesIdCurrent" => $categoriesIdCurrent
+    ]
+);
+
 
 if ($_SERVER['REQUEST_METHOD'] === "POST") {
     $lot = [
-        "lot-name" => !empty($_POST["lot-name"]) ? trim($_POST["lot-name"]) : '',
-        "category" => !empty($_POST["category"]) && is_numeric($_POST["category"]) ? trim($_POST["category"]) : 0,
-        "message" => !empty($_POST["message"]) ? trim($_POST["message"]) : '',
-        "lot-image" => !empty($_FILES["lot-image"]) ? $_FILES["lot-image"] : [],
-        "lot-rate" => !empty($_POST["lot-rate"]) ? trim($_POST["lot-rate"]) : '',
-        "lot-step" => !empty($_POST["lot-step"]) ? trim($_POST["lot-step"]) : '',
-        "lot-date" => !empty($_POST["lot-date"]) ? trim($_POST["lot-date"]) : ''
+        "lot-name" => isset($_POST["lot-name"]) && !empty($_POST["lot-name"]) ? trim($_POST["lot-name"]) : '',
+        "category" => isset($_POST["category"]) && !empty($_POST["category"]) && is_numeric($_POST["category"]) ? trim($_POST["category"]) : 0,
+        "message" => isset($_POST["message"]) && !empty($_POST["message"]) ? trim($_POST["message"]) : '',
+        "lot-image" => isset($_FILES["lot-image"]) && !empty($_FILES["lot-image"]) ? $_FILES["lot-image"] : null,
+        "lot-rate" => isset($_POST["lot-rate"]) && !empty($_POST["lot-rate"]) ? trim($_POST["lot-rate"]) : '',
+        "lot-step" => isset($_POST["lot-step"]) && !empty($_POST["lot-step"]) ? trim($_POST["lot-step"]) : '',
+        "lot-date" => isset($_POST["lot-date"]) && !empty($_POST["lot-date"]) ? trim($_POST["lot-date"]) : ''
     ];
 
     $required = ["lot-name", "category", "message", "lot-rate", "lot-step", "lot-date"];
@@ -103,25 +111,19 @@ if ($_SERVER['REQUEST_METHOD'] === "POST") {
         'add.php',
         [
             "categories" => $categories,
-            "errors" => $errors
+            "errors" => $errors,
+            "categoriesNav" => $categoriesNav
         ]
     );
 } else {
     $content = include_template(
         'add.php',
         [
-            "categories" => $categories
+            "categories" => $categories,
+            "categoriesNav" => $categoriesNav
         ]
     );
 }
-
-$categoriesNav = include_template(
-    'categories-nav.php',
-    [
-        "categories" => $categories,
-        "categoriesIdCurrent" => $categoriesIdCurrent
-    ]
-);
 
 $layout = include_template(
     'layout.php',
