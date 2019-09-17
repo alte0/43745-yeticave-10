@@ -298,7 +298,7 @@ function validateCategory($value, $link)
 }
 /**
  * Валидация целого числа и и больше нуля
- * @param string $value - значение для валидации;
+ * @param string $num - значение для валидации;
  * @return string|null
  */
 function validateValueOnInteger($num)
@@ -357,7 +357,7 @@ function addCommaAndSpaceText($str)
 }
 /**
  * Валидация email на регистрацию.
- * @param string $value - значение для валидации;
+ * @param string $email - значение для валидации;
  * @param resource $link - соединение с БД;
  * @return string|null
  */
@@ -385,7 +385,7 @@ function validateEmailSignUp($email, $link)
 }
 /**
  * Валидация email на вход
- * @param string $value - значение для валидации;
+ * @param string $email - значение для валидации;
  * @return string|null
  */
 function validateEmailSignIn($email)
@@ -457,8 +457,8 @@ function getBetsForId($getId, $linkDB, array $otherData = [])
 }
 /**
  * Получение времени в формате 5 минут назад, 20 минут назад, час назад, Вчера, в 21:30, 19.03.17 в 08:21
- * @param string $time - время;
  * @param string $today - сегодняшняя дата и время;
+ * @param string $timeBet - время ставки;
  * @return string
  */
 function getAgoText($today, $timeBet)
