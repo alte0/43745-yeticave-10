@@ -298,7 +298,7 @@ function validateCategory($value, $link)
 }
 /**
  * Валидация целого числа и и больше нуля
- * @param string $num - значение для валидации;
+ * @param string $value - значение для валидации;
  * @return string|null
  */
 function validateValueOnInteger($num)
@@ -335,11 +335,11 @@ function validateFileAndTypeImage($fileImage)
         return  'Вы не загрузили файл';
     }
 
-    $filePath = $fileImage["tmp_name"];
-    $fileType = mime_content_type($filePath);
-
-    if (!($fileType === "image/png" || $fileType === "image/jpeg")) {
-        return "Изображение должно быть jpeg, jpg или png";
+    if (!empty($fileImage['tmp_name'])) {
+        $fileType = mime_content_type($fileImage['tmp_name']);
+        if (!($fileType === "image/png" || $fileType === "image/jpeg")) {
+            return "Изображение должно быть jpeg, jpg или png";
+        }
     }
 
     return null;
@@ -357,7 +357,7 @@ function addCommaAndSpaceText($str)
 }
 /**
  * Валидация email на регистрацию.
- * @param string $email - значение для валидации;
+ * @param string $value - значение для валидации;
  * @param resource $link - соединение с БД;
  * @return string|null
  */
@@ -377,15 +377,17 @@ function validateEmailSignUp($email, $link)
     $result = mysqli_stmt_get_result($stmt);
     $arr = mysqli_fetch_array($result, MYSQLI_ASSOC);
 
-    if ($arr["email"] === $email) {
-        return "Этот email уже зарегестрирован";
+    if (isset($arr["email"])) {
+        if ($arr["email"] === $email) {
+            return "Этот email уже зарегестрирован";
+        }
     }
 
     return null;
 }
 /**
  * Валидация email на вход
- * @param string $email - значение для валидации;
+ * @param string $value - значение для валидации;
  * @return string|null
  */
 function validateEmailSignIn($email)
@@ -457,8 +459,8 @@ function getBetsForId($getId, $linkDB, array $otherData = [])
 }
 /**
  * Получение времени в формате 5 минут назад, 20 минут назад, час назад, Вчера, в 21:30, 19.03.17 в 08:21
+ * @param string $time - время;
  * @param string $today - сегодняшняя дата и время;
- * @param string $timeBet - время ставки;
  * @return string
  */
 function getAgoText($today, $timeBet)

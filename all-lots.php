@@ -9,8 +9,7 @@ $arrData = [
 if (isset($_GET["id"]) && is_numeric($_GET["id"]) && null !== $categoryName = getCategoryName($_GET["id"], $linkDB, $arrData)) {
     $searchCategory = intval(trim($_GET["id"]));
     $categoriesIdCurrent = $searchCategory;
-    $cur_page = isset($_GET['page']) ? intval($_GET['page']) : 1;
-
+    $cur_page = isset($_GET['page']) && !empty($_GET['page']) ? intval($_GET['page']) : 1;
 
     $sqlSearchCount = "SELECT COUNT(*) as count FROM (SELECT lots.*, c.name AS category FROM lots INNER JOIN сategories c ON lots.category_id = c.id WHERE lots.date_completion >= ? AND lots.category_id = ?) AS t";
 
@@ -33,6 +32,9 @@ if (isset($_GET["id"]) && is_numeric($_GET["id"]) && null !== $categoryName = ge
     $items_count = mysqli_fetch_array($resultSearchCount)["count"];
 
     $pages_count = ceil($items_count / $page_items);
+    if ($cur_page > $pages_count) {
+        $cur_page = $pages_count;
+    }
     $offset = ($cur_page - 1) * $page_items;
 
     $pages = range(1, $pages_count);

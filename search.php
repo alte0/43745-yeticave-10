@@ -3,7 +3,7 @@ require "init.php";
 
 if (isset($_GET["search"]) && !empty($_GET["search"])) {
     $searchText = trim($_GET["search"]);
-    $cur_page = isset($_GET['page']) ? intval($_GET['page']) : 1;
+    $cur_page = isset($_GET['page']) && !empty($_GET['page']) ? intval($_GET['page']) : 1;
 
     $sqlSearchCount = "SELECT COUNT(*) as count FROM (SELECT lots.*, c.name AS category FROM lots INNER JOIN сategories c ON lots.category_id = c.id LEFT JOIN bets b ON lots.id = b.lot_id WHERE lots.date_completion >= '$today' and MATCH(lots.name, lots.description) AGAINST(?) GROUP BY id ORDER BY date_create DESC) AS t";
 
@@ -26,6 +26,9 @@ if (isset($_GET["search"]) && !empty($_GET["search"])) {
     $items_count = mysqli_fetch_array($resultSearchCount)["count"];
 
     $pages_count = ceil($items_count / $page_items);
+    if ($cur_page > $pages_count) {
+        $cur_page = $pages_count;
+    }
     $offset = ($cur_page - 1) * $page_items;
 
     $pages = range(1, $pages_count);
