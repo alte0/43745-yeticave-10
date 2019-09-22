@@ -32,7 +32,7 @@ if (isset($_GET["id"]) && is_numeric($_GET["id"]) && null !== $categoryName = ge
     $items_count = mysqli_fetch_array($resultSearchCount)["count"];
 
     $pages_count = ceil($items_count / $page_items);
-    if ($cur_page > $pages_count) {
+    if ($cur_page > $pages_count && $pages_count > 0) {
         $cur_page = $pages_count;
     }
     $offset = ($cur_page - 1) * $page_items;

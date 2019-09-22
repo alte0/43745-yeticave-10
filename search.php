@@ -26,7 +26,7 @@ if (isset($_GET["search"]) && !empty($_GET["search"])) {
     $items_count = mysqli_fetch_array($resultSearchCount)["count"];
 
     $pages_count = ceil($items_count / $page_items);
-    if ($cur_page > $pages_count) {
+    if ($cur_page > $pages_count && $pages_count > 0) {
         $cur_page = $pages_count;
     }
     $offset = ($cur_page - 1) * $page_items;
