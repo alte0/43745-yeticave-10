@@ -171,7 +171,7 @@ function formatPrice(float $num, $isAddRubleSign = true): string
  */
 function clearStrDataTags($str): string
 {
-    $text = strip_tags($str);
+    $text = htmlentities(strip_tags($str));
 
     return $text;
 }
@@ -298,7 +298,7 @@ function validateCategory($value, $link)
 }
 /**
  * Валидация целого числа и и больше нуля
- * @param string $value - значение для валидации;
+ * @param string $num - значение для валидации;
  * @return string|null
  */
 function validateValueOnInteger($num)
@@ -357,7 +357,7 @@ function addCommaAndSpaceText($str)
 }
 /**
  * Валидация email на регистрацию.
- * @param string $value - значение для валидации;
+ * @param string $email - значение для валидации;
  * @param resource $link - соединение с БД;
  * @return string|null
  */

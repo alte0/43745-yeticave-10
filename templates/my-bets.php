@@ -13,7 +13,7 @@
         <tr class="rates__item <?= $isTimeEnd && !$isWinner ? "rates__item--end" : "" ?> <?= $isWinner ? "rates__item--win" : "" ?>">
           <td class="rates__info">
             <div class="rates__img">
-              <img src="../<?= $item["image"] ?? "" ?>" width="54" height="40" alt="Сноуборд">
+              <img src="../<?= $item["image"] ?? "" ?>" width="54" height="40" alt="<?= clearStrDataTags($item["name"] ?? "") ?>">
             </div>
             <?php if (!empty($item["contacts"]) && $isWinner) : ?>
               <div>

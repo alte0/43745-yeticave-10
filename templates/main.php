@@ -20,7 +20,7 @@
       <?php foreach ($announcements as $announcement) : ?>
       <li class="lots__item lot">
         <div class="lot__image">
-          <img src="<?= $announcement["image"] ?? "" ?>" width="350" height="260" alt="">
+          <img src="<?= $announcement["image"] ?? "" ?>" width="350" height="260" alt="<?= clearStrDataTags($announcement["name"] ?? "") ?>">
         </div>
         <div class="lot__info">
           <span class="lot__category"><?= $announcement["category"] ?? "" ?></span>

@@ -4,7 +4,7 @@
     <div class="lot-item__content">
       <div class="lot-item__left">
         <div class="lot-item__image">
-          <img src="../<?= $lot["image"] ?? "" ?>" width="730" height="548" alt="Сноуборд">
+          <img src="../<?= $lot["image"] ?? "" ?>" width="730" height="548" alt="<?= clearStrDataTags($lot["name"] ?? "") ?>">
         </div>
         <p class="lot-item__category">Категория: <span><?= $lot["category_name"] ?? "" ?></span></p>
         <p class="lot-item__description"><?= clearStrDataTags($lot["description"] ?? "") ?></p>
