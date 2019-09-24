@@ -2,7 +2,10 @@
 
 * Студент: [Максим Дмитриев](https://up.htmlacademy.ru/php/10/user/43745).
 * Наставник: [Алексей Стулов](https://htmlacademy.ru/profile/id25231).
+---
+
 [Открыть сайт](http://yeti-cave.hostronavt.ru/)
+
 ---
 
 **Обратите внимание на файл:**
