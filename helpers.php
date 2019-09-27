@@ -187,7 +187,7 @@ function addStrPadZero($str): string
 }
 /**
  * Функция вычисления оставшегося времени в формате «ЧЧ:ММ»
- * @param date $date дата в формате ГГГГ-ММ-ДД;
+ * @param $date $date дата в формате ГГГГ-ММ-ДД;
  * @return array [09, 29] - «ЧЧ:ММ»
  */
 function calcDateExpiration($date): array
